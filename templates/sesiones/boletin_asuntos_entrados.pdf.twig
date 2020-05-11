@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{{ title }}</title>
+</head>
+<style>
+    dl dt {
+        float: left;
+        width: 33%;
+        overflow: hidden;
+        clear: left;
+        text-align: right;
+        /*text-overflow: ellipsis;*/
+        white-space: nowrap;
+    }
+
+    dl dd {
+        margin-left: 35%;
+    }
+
+    dd {
+        text-align: justify;
+    }
+
+    h3 {
+        font-size: 11pt
+    }
+
+    .cuerpo p {
+        font-size: 11pt;
+    }
+
+    .proyecto {
+        page-break-inside: avoid;
+    }
+</style>
+<body>
+{% if sesion.asuntosEntrados %}
+    {{ sesion.asuntosEntrados | raw }}
+{% else %}
+    {% for titulo, lista in proyectos %}
+        {% if lista.count %}
+            <h3 style="text-align: center; margin-top: 5%"><u>{{ titulo }}</u></h3>
+            <div class="cuerpo">
+
+                {% for proyecto in lista %}
+                    <div class="proyecto">
+                        <p>
+                            {% set expte = proyecto.expediente |split(' ') %}
+                            {% if expte | length > 1 %}
+                                <dl>
+                                    <dt style="width:40%"><strong>EXPTE. {{ expte[0] }} Nº {{ expte[1] }}</strong></dt>
+                                    {% if proyecto.extracto %}
+                                        <dd style="margin-left: 42%">{{ proyecto.extracto | raw }}</dd>
+                                    {% else %}
+                                        <dd style="margin-left: 42%">{{ proyecto.expediente.extractoTemario | raw }}</dd>
+                                    {% endif %}
+
+                                </dl>
+                            {% else %}
+                                <dl>
+                                    <dt><strong>EXPTE. Nº {{ proyecto.expediente }}</strong></dt>
+                                    {% if proyecto.extracto %}
+                                        <dd>{{ proyecto.extracto | raw }}</dd>
+                                    {% else %}
+                                        <dd>{{ proyecto.expediente.extractoTemario | raw }}</dd>
+                                    {% endif %}
+
+                                </dl>
+                            {% endif %}
+                        </p>
+                        <p style="text-align: center">
+
+                            {{ proyecto.expediente.textoDelGiro(sesion) | raw }}
+
+                        </p>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endfor %}
+{% endif %}
+</body>
+</html>

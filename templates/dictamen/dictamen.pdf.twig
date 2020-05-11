@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{{ title }}</title>
+</head>
+<style>
+    .break {
+        page-break-after: always;
+    }
+
+    .text-center {
+        text-align: center;
+    }
+</style>
+<body>
+<div style="margin-top: 10%; margin-left: 2cm; margin-left: 2cm">
+    <div>
+        {{ dictamen.textoDictamen | raw }}
+    </div>
+    <br>
+    <div>
+        {% if dictamen.anexos.count > 0 %}
+            <p class="break">
+            {% for anexo in dictamen.anexos %}
+                {% if (anexo.anexo|split('.'))[1] != 'pdf' %}
+                <h2 class="text-center">{{ anexo.descripcion }}</h2>
+                <img style="max-width: 100%; height: auto; max-height: 24cm;"
+                     src="{{ absolute_url( asset('uploads/dictamenes/anexos/') ~ anexo.anexo ) }}">
+                {% endif %}
+            {% endfor %}
+            </p>
+        {% endif %}
+
+        <h4>Firmantes</h4>
+        {% for firmante in dictamen.firmantes | sort %}
+            {{ firmante.iniciador | title}}<br>
+        {% endfor %}
+
+    </div>
+</div>
+</body>
+</html>

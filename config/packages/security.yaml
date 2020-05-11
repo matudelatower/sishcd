@@ -1,14 +1,48 @@
 security:
+    encoders:
+        App\Entity\Usuario:
+            algorithm: auto
+
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
-        users_in_memory: { memory: null }
+        # used to reload user from session & other features (e.g. switch_user)
+        app_user_provider:
+            entity:
+                class: App\Entity\Usuario
+                property: username
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
+        sesion:
+            pattern: ^/sesion/*
+            provider: app_user_provider
+            form_login:
+                login_path: /sesion/login
+                check_path: /sesion/login
+                default_target_path: /sesion
+            #                csrf_token_generator: security.csrf.token_manager
+            logout:
+                path:   /sesion/logout
+                target: /sesion
+            anonymous:    true
+#            logout_on_user_change: true
+
         main:
-            anonymous: lazy
-            provider: users_in_memory
+            pattern: ^/
+            form_login:
+                provider: app_user_provider
+#                csrf_token_generator: security.csrf.token_manager
+                # if you are using Symfony < 2.8, use the following config instead:
+                # csrf_provider: form.csrf_provider
+            logout:       true
+            anonymous:    true
+#            logout_on_user_change: true
+            switch_user: { role: ROLE_ADMIN, parameter: _want_to_be_this_user }
+            guard:
+                authenticators:
+                    - App\Security\LoginFormAuthenticator
+            user_checker: App\Security\UserChecker
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication
@@ -19,5 +53,13 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+        - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/sesion/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/pantalla, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        #        - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        #        - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/sesion/, role: [ROLE_CONCEJAL, ROLE_SECRETARIO, ROLE_LEGISLATIVO, ROLE_DEFENSOR, ROLE_PROSECRETARIO] }
+        - { path: ^/admin/, role: ROLE_ADMIN }
+        - { path: ^/api/expedientes, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/, role: IS_AUTHENTICATED_FULLY }

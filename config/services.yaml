@@ -4,6 +4,16 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
+    locale: 'es'
+    app.path.expedientes_internos: '/uploads/expedientes/internos'
+    app.path.expedientes_externos: '/uploads/expedientes/externos'
+    app.path.expedientes_anexos: '/uploads/expedientes/anexos'
+    app.path.dictamenes_anexos: '/uploads/dictamenes/anexos'
+    app.path.dictamenes: '/uploads/dictamenes'
+    app.path.sanciones: '/uploads/sanciones'
+    app.path.documentos: '/uploads/documentos'
+    app.path.varios: '/uploads/varios'
+    app.path.ordenes_de_pago: '/uploads/ordenes_de_pago'
 
 services:
     # default configuration for services in *this* file
@@ -25,3 +35,14 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    App\Menu\Builder:
+        tags:
+            - { name: knp_menu.menu_builder, method: mainMenu, alias: main }
+
+    form.type.bootstrapcollection:
+        class: App\Form\BootstrapCollectionType
+        arguments:
+            - "@doctrine.orm.entity_manager"
+        tags:
+            - { name: form.type, alias: bootstrapcollection }

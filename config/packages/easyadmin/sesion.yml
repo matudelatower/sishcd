@@ -1,0 +1,18 @@
+easy_admin:
+    entities:
+        Sesion:
+            class: App\Entity\Sesion
+            form:
+                fields:
+                    - { property: 'titulo' }
+                    - { property: 'fecha', type_options: { widget: 'single_text', html5: true } }
+                    - { property: 'tipoSesion', type: 'entity', type_options: { 'query_builder': ['App\Repository\ParametroRepository', 'findTipoSesionActivo'] } }
+                    - { property: 'ordenDelDia', type: 'fos_ckeditor'}
+                    - { property: 'asuntosEntrados', type: 'fos_ckeditor'}
+                    - { property: 'acta', type: 'fos_ckeditor'}
+            edit:
+                title:  'Editar Sesión'
+            new:
+                title:  'Alta Sesión'
+            list:
+                title:  'Sesión'
