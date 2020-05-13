@@ -17,14 +17,10 @@ class PersonaType extends AbstractType {
 		        ->add( 'dni' )
 		        ->add( 'fechaNacimiento',
 			        DateType::class,
-			        array(
+			        [
+				        'html5'  => true,
 				        'widget' => 'single_text',
-				        'format' => 'dd/MM/yyyy',
-				        'attr'   => array(
-					        'class' => 'datepicker',
-				        ),
-			        ) )
-		;
+			        ] );
 	}
 
 	/**
@@ -40,7 +36,7 @@ class PersonaType extends AbstractType {
 	 * {@inheritdoc}
 	 */
 	public function getBlockPrefix() {
-		return 'App_persona';
+		return 'app_persona';
 	}
 
 

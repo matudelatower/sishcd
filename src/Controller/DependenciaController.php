@@ -143,7 +143,7 @@ class DependenciaController extends AbstractController
     private function createDeleteForm(Dependencia $dependencium)
     {
         return $this->createFormBuilder()
-            ->set($this->generateUrl('dependencia_delete', array('id' => $dependencium->getId())))
+            ->setAction($this->generateUrl('dependencia_delete', array('id' => $dependencium->getId())))
             ->setMethod('DELETE')
             ->getForm();
     }

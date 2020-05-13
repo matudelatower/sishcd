@@ -273,7 +273,7 @@ class SesionController extends AbstractController {
 		$sesion = $sesionQb->getQuery()->getSingleResult();
 
 		$bae         = $sesion->getBae()->first();
-		$proyectoBAE = $em->getRepository( 'AppBundle:ProyectoBAE' )->findOneBy(
+		$proyectoBAE = $em->getRepository( ProyectoBAE::class )->findOneBy(
 			[
 				'expediente'           => $expediente,
 				'boletinAsuntoEntrado' => $bae,

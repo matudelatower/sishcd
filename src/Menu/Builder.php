@@ -352,7 +352,8 @@ class Builder {
 						'linkAttributes' => [ 'class' => 'nav-link' ]
 					)
 				);
-			if ( ! $this->authorizationChecker->isGranted( 'ROLE_SECRETARIO' ) ) {
+			if ( ! $this->authorizationChecker->isGranted( 'ROLE_SECRETARIO' ) &&
+			! $this->authorizationChecker->isGranted( 'ROLE_MESA_ENTRADA' )) {
 				$menu[ $keyPersonal ]
 					->addChild(
 						'Incorporar Expedientes en Sesión',

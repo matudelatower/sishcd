@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\Dictamen;
 use App\Entity\DictamenOD;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -19,7 +20,7 @@ class DictamenODType extends AbstractType {
 				Select2EntityType::class,
 				[
 					'remote_route' => 'get_dictamenes_od',
-					'class'        => 'App\Entity\Dictamen',
+					'class'        => Dictamen::class,
 					'required'     => false,
 					'placeholder'  => 'Buscar por Expediente',
 				] )

@@ -62,7 +62,7 @@
                 <tbody>
 
                 {% for child in form %}
-                    <tr item="{{ loop.index0 }}" {% if child.vars.valid %} class="bootstrap-collection-history {% if not display_history %} hidden{% endif %}" {% endif %}>
+                    <tr item="{{ loop.index0 }}" {% if child.vars.valid %} class="bootstrap-collection-history {% if not display_history %} d-none{% endif %}" {% endif %}>
                         {% for widget in child %}
                             <td>
                                 {{ form_errors(widget) }}

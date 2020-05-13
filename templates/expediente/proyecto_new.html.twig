@@ -59,6 +59,10 @@
 {% block javascripts %}
     <script>
         var submitConfirm = false;
+        var buttonPressed = '';
+        $("button[type=submit]").on('click', function () {
+            buttonPressed = $(this).text()
+        });
         $(document).ready(function () {
             $('.tipo-proyecto').change(function () {
                 var tipoId = $(this).val();
@@ -74,9 +78,10 @@
                     }
                 });
             });
+
             $('form[name="{{ form.vars.name }}"]').submit(function (event) {
 
-                if (event.originalEvent.explicitOriginalTarget.firstChild.data == 'Guardar') {
+                if (buttonPressed == 'Guardar') {
                     return true;
                 }
 
@@ -86,7 +91,7 @@
                 } else {
                     console.log('no confirmo');
                     event.preventDefault();
-                    if (event.originalEvent.explicitOriginalTarget.firstChild.data == 'Guardar y enviar') {
+                    if (buttonPressed == 'Guardar y enviar') {
                         modalConfirm('¿Está seguro?', '<p>¿Realmente desea enviar el proyecto a Mesa de Entrada? <br> Esta acción es irreversible.</p>');
                     }
                 }

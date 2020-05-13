@@ -174,7 +174,7 @@ class AjaxController extends AbstractController {
 			$responseStatus = 500;
 		}
 
-		$formHtml = $this->renderView( '@App/Ajax/form_persona.html.twig',
+		$formHtml = $this->renderView( 'ajax/form_persona.html.twig',
 			array(
 				'form' => $form->createView()
 			) );
@@ -228,7 +228,7 @@ class AjaxController extends AbstractController {
 			$responseStatus = 500;
 		}
 
-		$formHtml = $this->renderView( '@App/Ajax/form.html.twig',
+		$formHtml = $this->renderView( 'ajax/form.html.twig',
 			array(
 				'form' => $form->createView()
 			) );

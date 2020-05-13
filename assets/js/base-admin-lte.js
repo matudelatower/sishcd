@@ -5,16 +5,16 @@
 // } catch (e) {}
 
 global.$ = global.jQuery = $;
-require('bootstrap');
+// require('bootstrap');
+require('bootstrap/dist/js/bootstrap.bundle.js');
 
 require('select2')
-require('jquery-ui-dist/jquery-ui.min.js')
-// require('bootstrap-daterangepicker')
-// require('bootstrap-datepicker')
-require('daterangepicker')
+require('select2/dist/js/i18n/es.js')
+// require('jquery-ui-dist/jquery-ui.min.js')
+// require('daterangepicker')
 require('moment')
 require('overlayScrollbars')
-require('fastclick')
+// require('fastclick')
 require('admin-lte')
 
 $(document).ready(function() {

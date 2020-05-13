@@ -2,6 +2,8 @@
 
 namespace App\Form;
 
+use App\Entity\Dependencia;
+use App\Entity\Persona;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -41,7 +43,7 @@ class ExpedienteAdministrativoExternoType extends AbstractType {
 				Select2EntityType::class,
 				[
 					'remote_route' => 'get_dependencias_por_nombre',
-					'class'        => 'App\Entity\Dependencia',
+					'class'        => Dependencia::class,
 					'required'     => false,
 					'placeholder'  => 'Por Nombre'
 
@@ -50,7 +52,7 @@ class ExpedienteAdministrativoExternoType extends AbstractType {
 				Select2EntityType::class,
 				[
 					'remote_route' => 'get_persona_por_dni',
-					'class'        => 'App\Entity\Persona',
+					'class'        => Persona::class,
 					'required'     => false,
 					'placeholder'  => 'Por DNI'
 

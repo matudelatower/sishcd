@@ -29,8 +29,8 @@
         <ul class="navbar-nav ml-auto">
             {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
                 <li class="nav-item">
-                    <a href="{{ path('app_homepage') }}?_want_to_be_this_user=_exit"><i
-                                class="fa fa-fw fa-sign-out"></i>
+                    <a class="nav-link" href="{{ path('app_homepage') }}?_want_to_be_this_user=_exit">
+                        <i class="fas fa-sign-out-alt"></i>
                         Desimpersonar
                     </a>
                 </li>
@@ -55,8 +55,8 @@
 
                         <span class="float-right text-muted text-sm">
                             {% if is_granted('ROLE_CONCEJAL') %}
-                            - Concejal
-                        {% elseif is_granted('ROLE_SECRETARIO') %}
+                                - Concejal
+                            {% elseif is_granted('ROLE_SECRETARIO') %}
                                 - Secretario
                             {% elseif is_granted('ROLE_LEGISLATIVO') %}
                                 - Legislativo
@@ -94,6 +94,51 @@
         <!-- /.sidebar -->
     </aside>
 
+    {# modal #}
+    <div class="modal fade" id="modal-alert" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">{{ "Aviso" |trans }}!</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+
+                </div>
+                <div class="modal-body">
+                    ...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" id="modal-btn-ok"
+                            data-dismiss="modal">{{ 'Ok'|trans }}</button>
+                    {#<a type="button" id="modal-btn-ok" class="btn btn-primary">Ok</a>#}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modal-confirm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">{{ "Aviso" |trans }}!</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    ...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" id="modal-confirm-btn-ok">Confirmar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {# end modals #}
+
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
@@ -111,6 +156,18 @@
         <!-- Main content -->
         <section class="content">
             <div class="container-fluid">
+
+                {% for label, messages in app.flashes(['success','warning', 'error']) %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ label }} alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                            <h5><i class="icon fas fa-ban"></i> Atención!</h5>
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+
+
                 {% block body %}{% endblock %}
             </div>
         </section>
@@ -134,6 +191,12 @@
 </script>
 {{ encore_entry_script_tags('js/functions') }}
 <script src="{{ asset('bundles/tetranzselect2entity/js/select2entity.js') }}"></script>
+{#<script>#}
+{#    $('body').on('click', '[data-prototype]', function(e) {#}
+{#        console.log('data-prototype')#}
+{#        $(this).prev().find('.select2entity').last().select2entity();#}
+{#    });#}
+{#</script>#}
 {% block javascripts %}
 
 {% endblock %}

@@ -4,11 +4,15 @@
 {% endblock title %}
 {% block body %}
 
-    {% if is_granted('ROLE_LEGISLATIVO') or is_granted('ROLE_MESA_ENTRADA') %}
-        <a class="btn btn-default" href="{{ path('expedientes_legislativos_index') }}">Volver</a>
-    {% else %}
-        <a class="btn btn-default" href="{{ path('proyectos_index') }}">Volver</a>
-    {% endif %}
+    <div class="row">
+        <div class="col-12 mb-3">
+            {% if is_granted('ROLE_LEGISLATIVO') or is_granted('ROLE_MESA_ENTRADA') %}
+                <a class="btn btn-default" href="{{ path('expedientes_legislativos_index') }}">Volver</a>
+            {% else %}
+                <a class="btn btn-default" href="{{ path('proyectos_index') }}">Volver</a>
+            {% endif %}
+        </div>
+    </div>
 
     <h1>Editar Proyecto</h1>
     <div class="card">
@@ -101,7 +105,7 @@
                                     <span>{{ acompaniante.iniciador.cargoPersona }}</span>
                                     <button type="button" class="btn-borrar-acompaniante btn btn-default"
                                             data-iniciador="{{ acompaniante.iniciador.id }}"><i
-                                                class="fa fa-remove"></i>
+                                                class="fas fa-times"></i>
                                     </button>
                                 </div>
                             {% endfor %}
@@ -174,11 +178,15 @@
         </div>
     </div>
 
-    {% if is_granted('ROLE_LEGISLATIVO') or is_granted('ROLE_MESA_ENTRADA') %}
-        <a class="btn btn-default" href="{{ path('expedientes_legislativos_index') }}">Volver</a>
-    {% else %}
-        <a class="btn btn-default" href="{{ path('proyectos_index') }}">Volver</a>
-    {% endif %}
+    <div class="row">
+        <div class="col-12 mb-3">
+            {% if is_granted('ROLE_LEGISLATIVO') or is_granted('ROLE_MESA_ENTRADA') %}
+                <a class="btn btn-default" href="{{ path('expedientes_legislativos_index') }}">Volver</a>
+            {% else %}
+                <a class="btn btn-default" href="{{ path('proyectos_index') }}">Volver</a>
+            {% endif %}
+        </div>
+    </div>
 
 {% endblock %}
 {% block javascripts %}
@@ -191,7 +199,10 @@
         {% endif %}
 
         var submitConfirm = false;
-
+        var buttonPressed = '';
+        $("button[type=submit]").on('click', function () {
+            buttonPressed = $(this).text()
+        });
         $(document).ready(function () {
 
             $('.btn-borrar-acompaniante').click(function () {
@@ -202,7 +213,7 @@
 
             $('form[name="{{ edit_form.vars.name }}"]').submit(function (event) {
 
-                if (event.originalEvent.explicitOriginalTarget.firstChild.data == 'Guardar') {
+                if (buttonPressed == 'Guardar') {
                     return true;
                 }
 
@@ -212,7 +223,7 @@
                 } else {
                     console.log('no confirmo');
                     event.preventDefault();
-                    if (event.originalEvent.explicitOriginalTarget.firstChild.data == 'Guardar y enviar') {
+                    if (buttonPressed == 'Guardar y enviar') {
                         modalConfirm('¿Está seguro?', '<p>¿Realmente desea enviar el proyecto a Mesa de Entrada? <br> Esta acción es irreversible.</p>');
                     }
                 }

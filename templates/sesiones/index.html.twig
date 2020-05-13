@@ -14,14 +14,16 @@
                 </div>
                 {{ form_start(filter_type) }}
                 <div class="card-body">
-                    <div class="col-md-6">
-                        {{ form_row(filter_type.titulo) }}
-                        {{ form_row(filter_type.fecha) }}
+                    <div class="row">
+                        <div class="col-md-6">
+                            {{ form_row(filter_type.titulo) }}
+                            {{ form_row(filter_type.fecha) }}
 
-                    </div>
-                    <div class="col-md-6">
-                        {{ form_row(filter_type.tipo) }}
+                        </div>
+                        <div class="col-md-6">
+                            {{ form_row(filter_type.tipo) }}
 
+                        </div>
                     </div>
 
                 </div>

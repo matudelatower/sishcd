@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\Expediente;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -16,7 +17,7 @@ class CrearDictamenType extends AbstractType {
 				Select2EntityType::class,
 				[
 					'remote_route' => 'get_expedientes',
-					'class'        => 'App\Entity\Expediente',
+					'class'        => Expediente::class,
 					'required'     => true,
 					'placeholder'  => 'Por Expte'
 

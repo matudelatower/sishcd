@@ -21,3 +21,91 @@
 npm-debug.log
 yarn-error.log
 ###< symfony/webpack-encore-bundle ###
+
+# -- uploads
+/public/uploads/expedientes/internos/*
+!public/uploads/expedientes/internos/.gitkeep
+/public/uploads/expedientes/externos/*
+!public/uploads/expedientes/externos/.gitkeep
+/public/uploads/documentos/*
+!public/uploads/documentos/.gitkeep
+/public/uploads/varios/*
+!public/uploads/varios/.gitkeep
+/public/uploads/expedientes/anexos/*
+!public/uploads/expedientes/anexos/.gitkeep
+/public/uploads/dictamenes/anexos/*
+!public/uploads/dictamenes/anexos/.gitkeep
+/public/uploads/ordenes_de_pago/*
+!public/uploads/ordenes_de_pago/.gitkeep
+/public/uploads/textos_definitivos/anexos/*
+!public/uploads/textos_definitivos/anexos/.gitkeep
+
+# -- Editores -----------------------------------------
+# vim
+.*.sw[a-z]
+*.un~
+Session.vim
+.netrwhist
+
+# eclipse
+*.pydevproject
+.project
+.metadata
+tmp/**
+tmp/**/*
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.classpath
+.settings/
+.loadpath
+.externalToolBuilders/
+*.launch
+.buildpath
+
+# phpstorm
+.idea/
+
+# textmate
+*.tmproj
+*.tmproject
+tmtags
+
+# sublimetext
+/*.sublime-project
+*.sublime-workspace
+
+# netbeans
+nbproject
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+nbactions.xml
+nb-configuration.xml
+
+# -- Sistemas Operativos ------------------------------
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+.*
+!.gitignore
+!.htaccess
+*~
+
+# Mac OS X
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.Spotlight-V100
+.Trashes
+/docker-compose.override.yml

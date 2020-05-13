@@ -14,8 +14,8 @@
                         </button>
                     </div>
                 </div>
-                {{ form_start(filter_type) }}
                 <div class="card-body">
+                {{ form_start(filter_type) }}
                     <div class="row">
                         <div class="col-6">
                             <div class="row">
@@ -48,10 +48,11 @@
                 <div class="card-footer">
                     {{ form_widget(filter_type.buscar) }}
                     {{ form_widget(filter_type.limpiar) }}
+                    <div class="d-none">
+                        {{ form_end(filter_type) }}
+                    </div>
                 </div>
-                <div class="d-none">
-                    {{ form_end(filter_type) }}
-                </div>
+
             </div>
         </div>
     </div>
@@ -107,35 +108,35 @@
                                     {% if is_granted('ROLE_LEGISLATIVO') and not is_granted('ROLE_SECRETARIO') %}
                                         <a class="btn btn-default" data-toggle="tooltip" title="Cargar Giros"
                                            href="{{ path('proyecto_bae_giro', { 'expediente': expediente.id }) }}">
-                                            <i class="fa fa-edit"></i>
+                                            <i class="fas fa-edit"></i>
                                         </a>
                                         <a class="btn btn-default" data-toggle="tooltip" title="Editar Extracto BAE"
                                            href="{{ path('editar_extracto_bae', { 'expediente': expediente.id }) }}">
-                                            <i class="fa fa-file-text-o"></i> BAE
+                                            <i class="far fa-file-alt"></i> BAE
                                         </a>
                                         <a class="btn btn-default" data-toggle="tooltip" title="Editar Extracto OD"
                                            href="{{ path('editar_extracto_od', { 'expediente': expediente.id }) }}">
-                                            <i class="fa fa-file-text"></i> OD
+                                            <i class="fas fa-file-alt"></i> OD
                                         </a>
                                         <a class="btn btn-default" data-toggle="tooltip" title="Expediente Incorporado en Sesión"
                                            href="{{ path('proyectobae_incorporar_a_sesion', {'expediente': expediente.id }) }}">
-                                            <i class="fa fa-caret-square-o-right"></i> IES
+                                            <i class="far fa-caret-square-right"></i> IES
                                         </a>
                                     {% endif %}
                                     {% if is_granted('ROLE_MESA_ENTRADA') %}
                                         <a class="btn btn-default" data-toggle="tooltip" title="Cargar Extracto"
                                            href="{{ path('expediente_cargar_extracto', { 'id': expediente.id }) }}">
-                                            <i class="fa fa-edit"></i>
+                                            <i class="fas fa-edit"></i>
                                         </a>
                                         <a class="btn btn-default" data-toggle="tooltip" title="Nuevo Giro"
                                            href="{{ path('expediente_nuevo_giro_legislativo', { 'id': expediente.id }) }}">
-                                            <i class="fa fa-map-signs"></i>
-                                            <i class="fa fa-balance-scale"></i>
+                                            <i class="fas fa-map-signs"></i>
+                                            <i class="fas fa-balance-scale"></i>
                                         </a>
                                     {% endif %}
                                     <a class="btn btn-default" data-toggle="tooltip" title="Seguimiento"
                                        href="{{ path('expediente_timeline', {id: expediente.id}) }}">
-                                        <i class="fa fa-road"></i>
+                                        <i class="fas fa-road"></i>
                                     </a>
                                     {#<a class="btn btn-default" target="_blank"#}
                                     {#href="{{ path('expediente_imprimir_caratula', {id: expediente.id}) }}">#}

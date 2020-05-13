@@ -13,22 +13,35 @@
 
 // console.log('Hello Webpack Encore! Edit me in assets/js/app.js');
 
+export const modalAlert = (msg) => {
+    window.$('#modal-alert .modal-body').html(msg);
+    window.$('#modal-alert').modal('toggle');
+}
+window.modalAlert = modalAlert;
+
+export const modalConfirm = (titulo, body, okButonHref) => {
+    window.$('#modal-confirm .modal-body').html(body);
+    window.$('#modal-confirm #myModalLabel').html(titulo);
+    window.$('#modal-confirm #modal-btn-ok').attr('href', okButonHref);
+    window.$('#modal-confirm').modal('toggle');
+}
+window.modalConfirm = modalConfirm;
+
 export const bootstrapCollectionBorrarItem = (item) => {
     window.$(item).parent().parent().remove();
 }
 window.bootstrapCollectionBorrarItem = bootstrapCollectionBorrarItem;
 
 export const inicializarPlugins = (item) => {
-    window.$('.select2').select2(
-        { language: "es"}
-    );
-    console.log(item)
-    // window.$(this).prev().find('.select2entity').last().select2entity();
+
+    if (item) {
+        item.find('.select2').select2(
+            {language: "es"}
+        );
+        item.find('.select2entity').select2entity()
+    }
+
 }
 window.inicializarPlugins = inicializarPlugins;
-
-window.$('body').on('click', '.bootstrapcollection-agregar-otro-item', function(e) {
-    window.$(this).prev().find('.select2entity').last().select2entity();
-});
 
 // window.$.widget.bridge('uibutton', window.$.ui.button)

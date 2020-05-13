@@ -12,6 +12,8 @@ easy_admin:
 
     design:
         brand_color: '#%env(APP_COLOR)%'
+        templates:
+            layout: 'easyadmin/default/layout.html.twig'
         form_theme:
             - '@EasyAdmin/form/bootstrap_4.html.twig'
             - '@FOSCKEditor/Form/ckeditor_widget.html.twig'

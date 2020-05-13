@@ -100,7 +100,7 @@ class Usuario implements UserInterface {
 	 * @see UserInterface
 	 */
 	public function getUsername(): string {
-		return (string) $this->email;
+		return (string) $this->username;
 	}
 
 	/**

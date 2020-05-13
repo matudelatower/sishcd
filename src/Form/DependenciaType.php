@@ -33,7 +33,7 @@ class DependenciaType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'App_dependencia';
+        return 'app_dependencia';
     }
 
 
