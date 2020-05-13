@@ -16,7 +16,7 @@ easy_admin:
                     - persona
 #                    - lastLogin
                     # if administrators are allowed to edit users' passwords and roles, add this:
-                    - { property: 'plainPassword', type: 'text', type_options: { required: false, mapped: false } }
+                    - { property: 'plainPassword', type: 'text', type_options: { required: false, mapped: false, label: 'Password' } }
                     - { property: 'roles', type: 'choice', type_options: { multiple: true, expanded: false, choices:
                         { 'ROLE_USER': 'ROLE_USER',
                           'ROLE_ADMIN': 'ROLE_ADMIN',

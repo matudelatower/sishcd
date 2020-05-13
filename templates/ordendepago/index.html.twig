@@ -7,7 +7,7 @@
 
     <div class="row">
         <div class="col-md-12">
-            <div class="card collapsed-box">
+            <div class="card collapsed-card">
                 <div class="card-header">
                     <h3 class="card-title">Filtros</h3>
                     <div class="card-tools pull-right">
@@ -15,28 +15,31 @@
                         </button>
                     </div>
                 </div>
-                {{ form_start(filter_type) }}
                 <div class="card-body">
-                    <div class="col-md-6">
-                        {{ form_row(filter_type.numero) }}
-                        {{ form_row(filter_type.fechaRendicion) }}
-                        {{ form_row(filter_type.folios) }}
-                        {{ form_row(filter_type.tipoOrdenPago) }}
-                    </div>
-                    <div class="col-md-6">
-                        {{ form_row(filter_type.numeroEstante) }}
-                        {{ form_row(filter_type.numeroCaja) }}
-                        {{ form_row(filter_type.paginaInicio) }}
-                        {{ form_row(filter_type.paginaFin) }}
+                {{ form_start(filter_type) }}
+                    <div class="row">
+                        <div class="col-md-6">
+                            {{ form_row(filter_type.numero) }}
+                            {{ form_row(filter_type.fechaRendicion) }}
+                            {{ form_row(filter_type.folios) }}
+                            {{ form_row(filter_type.tipoOrdenPago) }}
+                        </div>
+                        <div class="col-md-6">
+                            {{ form_row(filter_type.numeroEstante) }}
+                            {{ form_row(filter_type.numeroCaja) }}
+                            {{ form_row(filter_type.paginaInicio) }}
+                            {{ form_row(filter_type.paginaFin) }}
+                        </div>
                     </div>
                 </div>
                 <div class="card-footer">
                     {{ form_widget(filter_type.buscar) }}
                     {{ form_widget(filter_type.limpiar) }}
+                    <div class="d-none">
+                        {{ form_end(filter_type) }}
+                    </div>
                 </div>
-                <div class="d-none">
-                    {{ form_end(filter_type) }}
-                </div>
+
             </div>
         </div>
     </div>

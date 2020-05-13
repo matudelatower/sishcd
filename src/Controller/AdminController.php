@@ -4,8 +4,16 @@ namespace App\Controller;
 
 use App\Entity\Mocion;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\EasyAdminController;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class AdminController extends EasyAdminController {
+
+	private $passwordEncoder;
+
+	public function __construct( UserPasswordEncoderInterface $passwordEncoder ) {
+		$this->passwordEncoder = $passwordEncoder;
+	}
+
 //	public function createNewUsuarioEntity() {
 //		return $this->get( 'fos_user.user_manager' )->createUser();
 //	}
@@ -15,13 +23,25 @@ class AdminController extends EasyAdminController {
 //		parent::updateEntity( $user );
 //	}
 //
-//	public function prePersistUsuarioEntity( $user ) {
+	public function persistUsuarioEntity( $user ) {
 //		$this->get( 'fos_user.user_manager' )->updateUser( $user, false );
-//	}
+		$user->setPassword( $this->passwordEncoder->encodePassword(
+			$user,
+			$this->request->get( 'usuario' )['plainPassword']
+		) );
+		parent::persistEntity( $user );
+	}
+
 //
-//	public function preUpdateUsuarioEntity( $user ) {
+	public function updateUsuarioEntity( $user ) {
 //		$this->get( 'fos_user.user_manager' )->updateUser( $user, false );
-//	}
+		$user->setPassword( $this->passwordEncoder->encodePassword(
+			$user,
+			$this->request->get( 'usuario' )['plainPassword']
+		) );
+		parent::updateEntity( $user );
+
+	}
 
 	public function removeMocionEntity() {
 

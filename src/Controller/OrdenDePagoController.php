@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\OrdenDePago;
 use App\Form\Filter\OrdenDePagoFilterType;
+use App\Form\OrdenDePagoType;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -59,7 +60,7 @@ class OrdenDePagoController extends AbstractController {
 	 */
 	public function new( Request $request ) {
 		$ordenDePago = new Ordendepago();
-		$form        = $this->createForm( 'App\Form\OrdenDePagoType', $ordenDePago );
+		$form        = $this->createForm( OrdenDePagoType::class, $ordenDePago );
 		$form->handleRequest( $request );
 
 		if ( $form->isSubmitted() && $form->isValid() ) {
@@ -100,7 +101,7 @@ class OrdenDePagoController extends AbstractController {
 	 */
 	public function edit( Request $request, OrdenDePago $ordenDePago ) {
 
-		$editForm = $this->createForm( 'App\Form\OrdenDePagoType', $ordenDePago );
+		$editForm = $this->createForm( OrdenDePagoType::class, $ordenDePago );
 		$editForm->handleRequest( $request );
 
 		if ( $editForm->isSubmitted() && $editForm->isValid() ) {

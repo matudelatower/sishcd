@@ -1,24 +1,24 @@
 orden_de_pago_index:
     path:     /
-    defaults: { _controller: "AppBundle:OrdenDePago:index" }
+    defaults: { _controller: App\Controller\OrdenDePagoController::index }
     methods:  GET
 
 orden_de_pago_show:
     path:     /{id}/show
-    defaults: { _controller: "AppBundle:OrdenDePago:show" }
+    defaults: { _controller: App\Controller\OrdenDePagoController::show }
     methods:  GET
 
 orden_de_pago_new:
     path:     /new
-    defaults: { _controller: "AppBundle:OrdenDePago:new" }
+    defaults: { _controller: App\Controller\OrdenDePagoController::new }
     methods:  [GET, POST]
 
 orden_de_pago_edit:
     path:     /{id}/edit
-    defaults: { _controller: "AppBundle:OrdenDePago:edit" }
+    defaults: { _controller: App\Controller\OrdenDePagoController::edit }
     methods:  [GET, POST]
 
 orden_de_pago_delete:
     path:     /{id}/delete
-    defaults: { _controller: "AppBundle:OrdenDePago:delete" }
+    defaults: { _controller: App\Controller\OrdenDePagoController::delete }
     methods:  DELETE
