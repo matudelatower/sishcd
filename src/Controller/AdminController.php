@@ -35,10 +35,12 @@ class AdminController extends EasyAdminController {
 //
 	public function updateUsuarioEntity( $user ) {
 //		$this->get( 'fos_user.user_manager' )->updateUser( $user, false );
-		$user->setPassword( $this->passwordEncoder->encodePassword(
-			$user,
-			$this->request->get( 'usuario' )['plainPassword']
-		) );
+		if ( $this->request->get( 'usuario' )['plainPassword'] ) {
+			$user->setPassword( $this->passwordEncoder->encodePassword(
+				$user,
+				$this->request->get( 'usuario' )['plainPassword']
+			) );
+		}
 		parent::updateEntity( $user );
 
 	}
