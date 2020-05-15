@@ -7,15 +7,8 @@
     <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-
     <!-- Ionicons -->
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-    <!-- icheck bootstrap -->
-    <link rel="stylesheet" href="../../plugins/icheck-bootstrap/icheck-bootstrap.min.css">
-    <!-- Theme style -->
-
-    <!-- Google Font: Source Sans Pro -->
-    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 
     {% block stylesheets %}
         {{ encore_entry_link_tags('css/login') }}
@@ -70,7 +63,7 @@
             <!-- /.social-auth-links -->
 
             <p class="mb-1">
-                <a href="#">Olvidé mi contraseña</a>
+                <a href="{{ path('app_forgot_password_request') }}">Olvidé mi contraseña</a>
             </p>
         </div>
         <!-- /.login-card-body -->
