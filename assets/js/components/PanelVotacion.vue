@@ -42,9 +42,11 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4>{{ sesion }}</h4>
-                    <h1>{{ mocion }} - Sírvase Expresar su voto</h1>
-                    <p>{{ textoMocion }}</p>
+                    <div class="row text-center">
+                        <h4>{{ sesion }}</h4>
+                        <h1>{{ mocion }} - Sírvase Expresar su voto</h1>
+                        <p>{{ textoMocion }}</p>
+                    </div>
                 </div>
                 <div class="modal-body">
 
@@ -52,7 +54,7 @@
                         <div class="col-md-12">
                             <div class="clearfix">
                                 <span class="pull-left">{{ tipoMayoria }}</span>
-                                <small class="pull-right">Restan {{ duracion - tiempo }} segundo{{ (duracion - tiempo)
+                                <small class="float-right">Restan {{ duracion - tiempo }} segundo{{ (duracion - tiempo)
                                     ===
                                     1 ? '': 's' }}
                                 </small>
@@ -86,7 +88,7 @@
                                 <button class="btn btn-app btn-app-afirmativo"
                                         @click="votarSi">SI
                                 </button>
-                                <button class="btn btn-app btn-danger btn-app-negativo pull-right"
+                                <button class="btn btn-app btn-danger btn-app-negativo float-right"
                                         @click="votarNo">NO
                                 </button>
                             </div>

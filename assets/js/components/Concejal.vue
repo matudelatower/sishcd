@@ -1,7 +1,7 @@
 <style scoped>
-    .container {
-        margin-top: 15rem;
-    }
+    /*.container {*/
+    /*    margin-top: 15rem;*/
+    /*}*/
 </style>
 <template>
     <div>

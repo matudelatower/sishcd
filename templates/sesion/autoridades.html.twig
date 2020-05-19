@@ -14,11 +14,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
     {% block stylesheets %}
         {{ encore_entry_link_tags('css/admin-lte') }}
     {% endblock %}
+    {{ encore_entry_link_tags('main') }}
     {{ encore_entry_script_tags('admin-lte') }}
     <style>
         .navbar-primary{
             background-color: {{ app_color }} !important;
-
         }
     </style>
 </head>

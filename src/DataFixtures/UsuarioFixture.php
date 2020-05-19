@@ -17,6 +17,9 @@ class UsuarioFixture extends Fixture {
 
 	public function load( ObjectManager $manager ) {
 		$user = new Usuario();
+		$user->setUsername( 'admin' );
+		$user->setEmail( 'matias.delatorre89@gmail.com' );
+		$user->setEnabled( true );
 		$user->setPassword( $this->passwordEncoder->encodePassword(
 			$user,
 			'hcd123'

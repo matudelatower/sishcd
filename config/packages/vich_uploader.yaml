@@ -30,3 +30,6 @@ vich_uploader:
         orden_de_pago:
             uri_prefix: "%app.path.ordenes_de_pago%"
             upload_destination: "%kernel.project_dir%/public/uploads/ordenes_de_pago"
+        sis_images:
+            uri_prefix: "%app.path.sis_images%"
+            upload_destination: "%kernel.project_dir%/public/uploads/sis_images"

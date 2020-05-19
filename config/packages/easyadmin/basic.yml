@@ -39,6 +39,7 @@ easy_admin:
             - Dependencia
             - Persona
             - { label: 'Tipo Relación Persona', entity: TipoRelacionPersona }
-            - { label: 'Usuarios', entity: Usuario }
+            - { label: 'Configuración', entity: Configuracion, icon: 'cog' }
+            - { label: 'Usuarios', entity: Usuario, icon: 'users' }
         assets:
             favicon: 'favicon.png'

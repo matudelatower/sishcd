@@ -346,10 +346,10 @@ class AjaxController extends AbstractController {
 
 		$mail = $this->getUser()->getEmail();
 
-		$asunto = 'HCD Posadas - Código Impresión Proyecto';
+		$asunto = 'HCD '.$_ENV['CIUDAD_NAME'].' - Código Impresión Proyecto';
 
 		$code = new QrCode( $expediente->getCodigoReferencia() );
-		$code->setLogoPath( $this->get( 'kernel' )->getRootDir() . '/../web/apple-touch-icon.png' )
+		$code->setLogoPath( $this->get( 'kernel' )->getRootDir() . '/../public/uploads/sis_images/apple-touch-icon.png' )
 		     ->setLogoWidth( 50 );
 
 		$nombreAdjunto = $expediente->getId() . '.png';

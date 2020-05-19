@@ -81,11 +81,11 @@
                     </div>
                     <div class="card-body">
                         <img class="img-responsive"
-                             src="{{ qr_code_data_uri(expediente.codigoReferencia, { writer: 'png', logo_path: kernelProjectDir ~ '/public/build/images/apple-touch-icon.png' , logo_width: 50 }) }}"/>
+                             src="{{ qr_code_data_uri(expediente.codigoReferencia, { writer: 'png', logo_path: kernelProjectDir ~ '/public/uploads/sis_images/apple-touch-icon.png' , logo_width: 50 }) }}"/>
                     </div>
                     <div class="card-footer">
                         <a class="btn btn-primary" download="{{ expediente.id }}.png"
-                           href="{{ qr_code_data_uri(expediente.codigoReferencia, { writer: 'png' , logo_path: kernelProjectDir ~ '/public/build/images/apple-touch-icon.png' , logo_width: 50 }) }}"><i
+                           href="{{ qr_code_data_uri(expediente.codigoReferencia, { writer: 'png' , logo_path: kernelProjectDir ~ '/public/uploads/sis_images/apple-touch-icon.png' , logo_width: 50 }) }}"><i
                                     class="fa fa-download"></i> Descargar Codigo</a>
                         <a class="btn btn-primary btn-enviar-mail"><i class="fa fa-envelope"></i> Enviar al mail</a>
                     </div>

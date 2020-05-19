@@ -14,6 +14,7 @@ parameters:
     app.path.documentos: '/uploads/documentos'
     app.path.varios: '/uploads/varios'
     app.path.ordenes_de_pago: '/uploads/ordenes_de_pago'
+    app.path.sis_images: '/uploads/sis_images'
 
 services:
     # default configuration for services in *this* file

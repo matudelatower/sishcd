@@ -8,7 +8,6 @@ use App\Entity\Cargo;
 use App\Entity\ProyectoBAE;
 use App\Entity\Sesion;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Util\Debug;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use App\Entity\Usuario;
