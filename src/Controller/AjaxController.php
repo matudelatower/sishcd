@@ -30,6 +30,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
 
 class AjaxController extends AbstractController {
@@ -288,6 +289,11 @@ class AjaxController extends AbstractController {
 		return new JsonResponse( $json );
 	}
 
+	/**
+	 * @Route(path="sesion/ultima-sesion", name="get_ultima_sesion")
+	 *
+	 * @return JsonResponse
+	 */
 	public function getUltimaSesion() {
 
 		$json = $this->getDoctrine()->getRepository( Sesion::class )->findUltimaSesion();
@@ -295,6 +301,11 @@ class AjaxController extends AbstractController {
 		return new JsonResponse( $json[0] );
 	}
 
+	/**
+	 * @Route(path="sesion/buscar-expediente", name="get_buscar_expediente")
+	 *
+	 * @return JsonResponse
+	 */
 	public function buscarExpediente( Request $request ) {
 
 		$data = $request->get( 'data' );
@@ -590,6 +601,11 @@ class AjaxController extends AbstractController {
 		return new JsonResponse( $json );
 	}
 
+	/**
+	 * @Route(path="sesion/consultar-sesiones", name="get_sesiones")
+	 *
+	 * @return JsonResponse
+	 */
 	public function consultarSesiones( Request $request ) {
 		$em = $this->getDoctrine()->getManager();
 
@@ -804,6 +820,8 @@ class AjaxController extends AbstractController {
 	}
 
 	/**
+	 * @Route(path="sesion/concejales", name="get_concejales")
+	 *
 	 * @return JsonResponse
 	 */
 	public function getConcejales() {
@@ -824,10 +842,10 @@ class AjaxController extends AbstractController {
 
 		$concejales = array_map( function ( Usuario $usuario ) {
 			$persona = $usuario->getPersona();
-
+			// TODO checkear utf encode
 			return [
 				'id'     => $usuario->getId(),
-				'nombre' => ucwords( strtolower( $persona->getNombreCompleto() ) ),
+				'nombre' => utf8_encode(ucwords( strtolower( $persona->getNombreCompleto() ) )),
 			];
 		},
 			$concejales );
@@ -861,8 +879,7 @@ class AjaxController extends AbstractController {
 	}
 
 	/**
-	 * @param Request $request
-	 * @param Sesion $sesion
+	 * @Route(path="sesion/consultar-sesion/{sesion}", name="get_sesion")
 	 *
 	 * @return JsonResponse
 	 */
@@ -995,6 +1012,7 @@ class AjaxController extends AbstractController {
 				'fecha'           => $sesion->getFecha()->format( 'Y-m-d H:i:s' ),
 				'titulo'          => $sesion->getTitulo(),
 				'asuntosEntrados' => $sesion->getAsuntosEntrados(),
+				'ordenDelDia'     => $sesion->getOrdenDelDia(),
 				'tipoSesion'      => $sesion->getTipoSesion()->getValor(),
 				'proyectos'       => $proyectos,
 				'dictamenes'      => $dictamenes,
@@ -1035,8 +1053,8 @@ class AjaxController extends AbstractController {
 		$iniciadores = $exp->getIniciadores()->map( function ( IniciadorExpediente $ie ) use ( &$autor ) {
 			if ( $ie->getAutor() ) {
 				$autor = [
-					'nombre' => $ie->getIniciador()->getCargoPersona()->getPersona()->getNombreCompleto(),
-					'cargo'  => $ie->getIniciador()->getCargoPersona()->getCargo()->getNombre(),
+					'nombre' => ($ie->getIniciador()) ? $ie->getIniciador()->getCargoPersona()->getPersona()->getNombreCompleto() : $ie->getIniciador(),
+					'cargo'  => ($ie->getIniciador()) ? $ie->getIniciador()->getCargoPersona()->getCargo()->getNombre(): $ie->getIniciador(),
 				];
 			}
 			if ( $ie->getIniciador() ) {

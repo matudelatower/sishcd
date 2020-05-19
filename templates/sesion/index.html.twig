@@ -1,55 +1,31 @@
-<!doctype html>
+<!DOCTYPE html>
+<!--
+This is a starter template page. Use this page to start your new project from
+scratch. This page gets rid of all links and provides the needed markup only.
+-->
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
 
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Sesión HCD</title>
-    <link rel="stylesheet" href="{{ asset('build/global.css') }}">
-    <link rel="stylesheet" href="{{ asset('build/common.css') }}">
-    <link rel="stylesheet" href="{{ asset('build/app.css') }}">
-    <link rel="stylesheet" href="{{ asset('bundles/theme/css/custom.css') }}">
-    <link rel="stylesheet" href="{{ asset('bundles/theme/admin-lte/css/AdminLTE.min.css') }}">
+
+    {% block stylesheets %}
+        {{ encore_entry_link_tags('css/admin-lte') }}
+    {% endblock %}
+    {{ encore_entry_script_tags('admin-lte') }}
     <style>
-
-        .btn-primary-hcd {
-            background-color: #12a9d4;
-            border-color: #12a9d4;
-            color: #fff;
-        }
-
-        .navbar-fixed-top {
-            background-color: #17a867;
-            padding: 1%;
-        }
-
-        dl dt {
-            float: left;
-            width: 33%;
-            overflow: hidden;
-            clear: left;
-            text-align: right;
-            white-space: nowrap;
-        }
-
-        dl dd {
-            margin-left: 35%;
-        }
-
-        dd {
-            text-align: justify;
+        .navbar-primary{
+            background-color: {{ app_color }} !important;
         }
     </style>
     <script>
         window.user = {id: {{ app.user.id }} };
-        window.baseUrl = '{{ path('app_homepage') }}';
-        window.assetPath = '{{ asset('uploads/') }}';
     </script>
 </head>
-<body>
-
-<div class="container">
+<body class="hold-transition layout-top-nav">
+<div class="wrapper" id="app">
     {#modal#}
     <div id="modal-dictamen" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog"
          aria-labelledby="modal-dictamen">
@@ -68,39 +44,61 @@
         </div>
     </div>
     {#modal#}
-    <div class="row">
-        {% if is_granted('ROLE_CONCEJAL') %}
-            <div id="app">
-                <panel-concejal path-logout="{{ path('sesion_logout') }}"
-                                path-carta-organica="{{ asset('uploads/documentos/') ~ cartaOrganica.documento }}"
-                                concejal="{{ concejal }}">
-                </panel-concejal>
-            </div>
-        {% endif %}
 
-        <div class="col-md-12">
-
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
+            <div class="container">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1 class="m-0 text-dark">
+                            {% if is_granted('ROLE_CONCEJAL') %}
+                                Concejal {{ concejal }}
+                            {% endif %}
+                        </h1>
+                    </div><!-- /.col -->
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            {{ sesion.fecha |format_datetime(locale='es', pattern="d 'de' MMMM Y") }}
+                            - {{ sesion.titulo }}
+                        </ol>
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+            </div><!-- /.container-fluid -->
         </div>
-    </div>
-    <div class="row">
-        <hr>
-        <div class="col-md-12">
-            <h2>
+        <!-- /.content-header -->
+
+        <!-- Main content -->
+        <div class="content">
+            <div class="container">
                 {% if is_granted('ROLE_CONCEJAL') %}
-                    Concejal {{ concejal }}
+                    <div id="app">
+                        <panel-concejal path-logout="{{ path('sesion_logout') }}"
+                                        path-carta-organica="{{ asset('uploads/documentos/') ~ cartaOrganica.documento }}"
+                                        concejal="{{ concejal }}">
+                        </panel-concejal>
+                    </div>
                 {% endif %}
-            </h2>
+            </div><!-- /.container-fluid -->
         </div>
+        <!-- /.content -->
     </div>
+    <!-- /.content-wrapper -->
+
 </div>
+<!-- ./wrapper -->
 
-</body>
-
-<script src="{{ asset('build/common-js.js') }}"></script>
+<!-- REQUIRED SCRIPTS -->
+{% block javascripts %}
+    {{ encore_entry_script_tags('main') }}
+{% endblock %}
 <script>
     $(document).ready(function () {
         $(document).ajaxStop($.unblockUI);
     });
 </script>
-<script src="{{ asset('build/app.js') }}"></script>
+
+
+</body>
 </html>

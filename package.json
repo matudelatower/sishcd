@@ -2,9 +2,13 @@
     "devDependencies": {
         "@symfony/webpack-encore": "^0.29.0",
         "core-js": "^3.0.0",
+        "dotenv-webpack": "^1.8.0",
         "node-sass": "^4.14.1",
         "regenerator-runtime": "^0.13.2",
         "sass-loader": "^7.3.1",
+        "vue": "^2.6.11",
+        "vue-loader": "^15.9.2",
+        "vue-template-compiler": "^2.6.11",
         "webpack-notifier": "^1.6.0"
     },
     "license": "MIT",
@@ -17,6 +21,21 @@
     },
     "dependencies": {
         "admin-lte": "^3.0.4",
-        "ckeditor": "^4.12.1"
-    }
+        "axios": "^0.19.2",
+        "ckeditor": "^4.12.1",
+        "dotenv": "^8.2.0",
+        "ioredis": "^4.17.1",
+        "socket.io": "^2.3.0",
+        "vue-moment": "^4.1.0"
+    },
+    "contributors": [
+        {
+            "name": "Matias Solis de la Torre",
+            "email": "matias.delatorre89@gmail.com"
+        },
+        {
+            "name": "Raul Neis",
+            "email": "raulneis@gmail.com"
+        }
+    ]
 }

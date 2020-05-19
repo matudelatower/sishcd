@@ -1,5 +1,5 @@
 {#{% extends 'base.html.twig' %}#}
-{% extends ':sesion:autoridades.html.twig' %}
+{% extends 'sesion/autoridades.html.twig' %}
 
 {#{% block title %}#}
     {#Mociones#}
@@ -12,7 +12,7 @@
         <div class="card-body">
             <div class="row mb-3">
                 <div class="col-md-12">
-                    <a class="btn btn-lg pull-right btn-primary" href="{{ path('mocion_new', {'tipo': 'mocion-tipo-espontanea'}) }}">Nueva moción espontánea</a>
+                    <a class="btn btn-lg float-right btn-primary" href="{{ path('mocion_new', {'tipo': 'mocion-tipo-espontanea'}) }}">Nueva moción espontánea</a>
                     <a class="btn btn-lg btn-default" href="{{ path('mocion_new') }}">Nueva moción</a>
                 </div>
             </div>

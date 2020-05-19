@@ -2,9 +2,14 @@
 
 namespace App\Controller;
 
+use App\Entity\Documento;
 use App\Entity\Mocion;
 use App\Entity\Parametro;
+use App\Entity\Sesion;
 use App\Entity\Voto;
+use App\Form\MocionType;
+use App\Service\NotificationsManager;
+use App\Service\VotacionManager;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Exception;
@@ -12,24 +17,34 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Mocion controller.
  *
  */
 class MocionController extends AbstractController {
+
+	protected $votacionManager;
+	protected $notificacionesManager;
+
+	public function __construct( VotacionManager $votacionManager, NotificationsManager $notificacionesManager ) {
+		$this->votacionManager = $votacionManager;
+		$this->notificacionesManager = $notificacionesManager;
+	}
+
 	/**
 	 * Lists all mocion entities.
 	 *
 	 */
-	public function indexAction( Request $request ) {
+	public function index( Request $request ) {
 		if ( ! $this->get( 'security.authorization_checker' )->isGranted( 'ROLE_SECRETARIO' ) ) {
 			throw $this->createAccessDeniedException( 'Solo el Secretario puede lanzar mociones' );
 		}
 		$em = $this->getDoctrine()->getManager();
 
 		try {
-			$sesion = $this->getDoctrine()->getRepository( 'AppBundle:Sesion' )->findQbUltimaSesion()->getQuery()->getSingleResult();
+			$sesion = $this->getDoctrine()->getRepository( Sesion::class )->findQbUltimaSesion()->getQuery()->getSingleResult();
 		} catch ( NoResultException $e ) {
 			$this->addFlash( 'warning', 'No existe sesión activa' );
 
@@ -60,9 +75,9 @@ class MocionController extends AbstractController {
 			'DICTÁMENES DE ORDENANZA'    => $od->getDictamenesDeOrdenanza(),
 		];
 
-		$mocions = $em->getRepository( 'AppBundle:Mocion' )->findByUltimaSesion( $sesion );
+		$mocions = $em->getRepository( Mocion::class )->findByUltimaSesion( $sesion );
 
-		$cartaOrganica = $this->getDoctrine()->getRepository( 'AppBundle:Documento' )->findOneBySlug( 'carta-organica' );
+		$cartaOrganica = $this->getDoctrine()->getRepository( Documento::class )->findOneBySlug( 'carta-organica' );
 
 		return $this->render( 'mocion/index.html.twig',
 			array(
@@ -78,10 +93,10 @@ class MocionController extends AbstractController {
 	 * Creates a new mocion entity.
 	 *
 	 */
-	public function newAction( Request $request ) {
+	public function new( Request $request ) {
 		$mocion = new Mocion();
 		try {
-			$sesion = $this->getDoctrine()->getRepository( 'AppBundle:Sesion' )->findQbUltimaSesion()->getQuery()->getSingleResult();
+			$sesion = $this->getDoctrine()->getRepository( Sesion::class )->findQbUltimaSesion()->getQuery()->getSingleResult();
 		} catch ( NoResultException $e ) {
 			$this->addFlash( 'warning', 'No existe sesión activa' );
 
@@ -91,21 +106,21 @@ class MocionController extends AbstractController {
 
 
 		if ( $request->get( 'tipo' ) === 'mocion-tipo-espontanea' ) {
-			$mocion->setTipo( $this->get( 'doctrine.orm.default_entity_manager' )
+			$mocion->setTipo( $this->getDoctrine()
 			                       ->getRepository( Parametro::class )
 			                       ->getBySlug( Mocion::TIPO_ESPONTANEA ) );
 		}
 
-		$form = $this->createForm( 'App\Form\MocionType', $mocion );
+		$form = $this->createForm( MocionType::class, $mocion );
 		$form->handleRequest( $request );
 
 		if ( $form->isSubmitted() && $form->isValid() ) {
 
-			$this->get( 'votacion.manager' )->crear( $mocion );
+			$this->votacionManager->crear( $mocion );
 
 			if ( $request->get( 'guardar-y-lanzar' ) ) {
 				try {
-					$this->get( 'votacion.manager' )->lanzar( $mocion );
+					$this->votacionManager->lanzar( $mocion );
 				} catch ( \Exception $ex ) {
 					$this->addFlash(
 						'error',
@@ -125,7 +140,7 @@ class MocionController extends AbstractController {
 			$this->addFlash( 'warning', 'La moción Nº ' . $enVotacion . ' no está finalizada' );
 		}
 
-		$cartaOrganica = $this->getDoctrine()->getRepository( 'AppBundle:Documento' )->findOneBySlug( 'carta-organica' );
+		$cartaOrganica = $this->getDoctrine()->getRepository( Documento::class )->findOneBySlug( 'carta-organica' );
 
 		$bae = $sesion->getBae()->first();
 		$od  = $sesion->getOd()->first();
@@ -165,9 +180,9 @@ class MocionController extends AbstractController {
 	 * Finds and displays a mocion entity.
 	 *
 	 */
-	public function showAction( Request $request, Mocion $mocion ) {
+	public function show( Request $request, Mocion $mocion ) {
 		$deleteForm = $this->createDeleteForm( $mocion );
-		$sesion     = $this->getDoctrine()->getRepository( 'AppBundle:Sesion' )->findQbUltimaSesion()->getQuery()->getSingleResult();
+		$sesion     = $this->getDoctrine()->getRepository( Sesion::class )->findQbUltimaSesion()->getQuery()->getSingleResult();
 		$bae        = $sesion->getBae()->first();
 		$od         = $sesion->getOd()->first();
 
@@ -183,7 +198,7 @@ class MocionController extends AbstractController {
 			'DICTÁMENES DE RESOLUCIÓN'   => $od->getDictamenesDeResolucion(),
 			'DICTÁMENES DE ORDENANZA'    => $od->getDictamenesDeOrdenanza(),
 		];
-		$cartaOrganica = $this->getDoctrine()->getRepository( 'AppBundle:Documento' )->findOneBySlug( 'carta-organica' );
+		$cartaOrganica = $this->getDoctrine()->getRepository( Documento::class )->findOneBySlug( 'carta-organica' );
 
 		return $this->render( 'mocion/show.html.twig',
 			array(
@@ -199,68 +214,68 @@ class MocionController extends AbstractController {
 			) );
 	}
 
-	public function mostrarResultadoAction(Mocion $mocion) {
+	public function mostrarResultado( Mocion $mocion ) {
 		$textoMocion = '';
-		if ($expediente = $mocion->getExpediente()) {
+		if ( $expediente = $mocion->getExpediente() ) {
 			$textoMocion = 'Expediente ' . $expediente . ': ' . $expediente->getExtracto();
 		}
 
 		$tipoMayoria = $mocion->getTipoMayoria();
-		if ($tipoMayoria) {
+		if ( $tipoMayoria ) {
 			$tipoMayoria = 'Se aprueba con ' . $tipoMayoria;
 		}
 
-		$votos = $mocion->getVotos();
+		$votos           = $mocion->getVotos();
 		$votaronPositivo = [];
 		$votaronNegativo = [];
-		$aNoVotaron = [];
+		$aNoVotaron      = [];
 
-		foreach ($votos as $voto) {
-			switch ($voto->getValor()) {
+		foreach ( $votos as $voto ) {
+			switch ( $voto->getValor() ) {
 				case Voto::VOTO_AFIRMATIVO:
-					$votaronPositivo[] = strtoupper($voto->getConcejal()->getPersona()->getApellido());
+					$votaronPositivo[] = strtoupper( $voto->getConcejal()->getPersona()->getApellido() );
 					break;
 				case Voto::VOTO_NEGATIVO:
-					$votaronNegativo[] = strtoupper($voto->getConcejal()->getPersona()->getApellido());
+					$votaronNegativo[] = strtoupper( $voto->getConcejal()->getPersona()->getApellido() );
 					break;
 				case Voto::VOTO_ABSTENCION:
-					$aNoVotaron[] = strtoupper($voto->getConcejal()->getPersona()->getApellido());
+					$aNoVotaron[] = strtoupper( $voto->getConcejal()->getPersona()->getApellido() );
 					break;
 			}
 		}
 
-		$this->get('notifications.manager')->notify(
+		$this->notificacionesManager->notify(
 			'votacion.resultados',
 			array(
-				'mocion' => 'Moción Nº' . $mocion->__toString().' (Finalizada)',
-				'textoMocion' => $textoMocion,
-				'tipoMayoria' => $tipoMayoria,
-				'sesion' => $mocion->getSesion()->__toString(),
-				'afirmativos' => $mocion->getCuentaAfirmativos(),
-				'negativos' => $mocion->getCuentaNegativos(),
-				'abstenciones' => $mocion->getCuentaAbstenciones(),
-				'total' => $mocion->getCuentaTotal(),
-				'aprobado' => $mocion->isAprobado(),
+				'mocion'          => 'Moción Nº' . $mocion->__toString() . ' (Finalizada)',
+				'textoMocion'     => $textoMocion,
+				'tipoMayoria'     => $tipoMayoria,
+				'sesion'          => $mocion->getSesion()->__toString(),
+				'afirmativos'     => $mocion->getCuentaAfirmativos(),
+				'negativos'       => $mocion->getCuentaNegativos(),
+				'abstenciones'    => $mocion->getCuentaAbstenciones(),
+				'total'           => $mocion->getCuentaTotal(),
+				'aprobado'        => $mocion->isAprobado(),
 				'votaronNegativo' => $votaronNegativo,
 				'votaronPositivo' => $votaronPositivo,
-				'seAbstuvieron' => $aNoVotaron,
+				'seAbstuvieron'   => $aNoVotaron,
 			)
 		);
 
-		return JsonResponse::create(array());
+		return JsonResponse::create( array() );
 	}
 
-	public function mostrarPresentesAction() {
-		$this->get('notifications.manager')->notify('votacion.finalizada', array());
+	public function mostrarPresentes() {
+		$this->notificacionesManager->notify( 'votacion.finalizada', array() );
 
-		return JsonResponse::create(array());
+		return JsonResponse::create( array() );
 	}
 
 	/**
 	 * Finds and displays a mocion entity.
 	 *
 	 */
-	public function votarAction( Request $request, Mocion $mocion ) {
+	public function votar( Request $request, Mocion $mocion ) {
 		$deleteForm = $this->createDeleteForm( $mocion );
 
 		$enVotacion = $this->getDoctrine()
@@ -287,9 +302,9 @@ class MocionController extends AbstractController {
 				) );
 		}
 
-		$sesion = $this->getDoctrine()->getRepository( 'AppBundle:Sesion' )->findQbUltimaSesion()->getQuery()->getSingleResult();
+		$sesion = $this->getDoctrine()->getRepository( Sesion::class )->findQbUltimaSesion()->getQuery()->getSingleResult();
 
-		$cartaOrganica = $this->getDoctrine()->getRepository( 'AppBundle:Documento' )->findOneBySlug( 'carta-organica' );
+		$cartaOrganica = $this->getDoctrine()->getRepository( Documento::class )->findOneBySlug( 'carta-organica' );
 
 		return $this->render( 'mocion/show.html.twig',
 			array(
@@ -307,12 +322,12 @@ class MocionController extends AbstractController {
 	 * Displays a form to edit an existing mocion entity.
 	 *
 	 */
-	public function editAction( Request $request, Mocion $mocion ) {
-		$cartaOrganica = $this->getDoctrine()->getRepository( 'AppBundle:Documento' )->findOneBySlug( 'carta-organica' );
+	public function edit( Request $request, Mocion $mocion ) {
+		$cartaOrganica = $this->getDoctrine()->getRepository( Documento::class )->findOneBySlug( 'carta-organica' );
 		$deleteForm    = $this->createDeleteForm( $mocion );
-		$editForm      = $this->createForm( 'App\Form\MocionType', $mocion );
+		$editForm      = $this->createForm( MocionType::class, $mocion );
 		$editForm->handleRequest( $request );
-		$sesion = $this->getDoctrine()->getRepository( 'AppBundle:Sesion' )->findQbUltimaSesion()->getQuery()->getSingleResult();
+		$sesion = $this->getDoctrine()->getRepository( Sesion::class )->findQbUltimaSesion()->getQuery()->getSingleResult();
 		$bae    = $sesion->getBae()->first();
 		$od     = $sesion->getOd()->first();
 
@@ -351,7 +366,7 @@ class MocionController extends AbstractController {
 	 * Deletes a mocion entity.
 	 *
 	 */
-	public function deleteAction( Request $request, Mocion $mocion ) {
+	public function delete( Request $request, Mocion $mocion ) {
 		$form = $this->createDeleteForm( $mocion );
 		$form->handleRequest( $request );
 
@@ -384,9 +399,9 @@ class MocionController extends AbstractController {
 	 * @return \Symfony\Component\HttpFoundation\RedirectResponse
 	 * @throws \Doctrine\ORM\OptimisticLockException
 	 */
-	public function lanzarVotacionAction( Mocion $mocion ) {
+	public function lanzarVotacion( Mocion $mocion ) {
 		try {
-			$votacion = $this->get( 'votacion.manager' )->lanzar( $mocion );
+			$votacion = $this->votacionManager->lanzar( $mocion );
 		} catch ( \Exception $ex ) {
 			$this->addFlash(
 				'error',
@@ -402,9 +417,9 @@ class MocionController extends AbstractController {
 	 *
 	 * @return \Symfony\Component\HttpFoundation\RedirectResponse
 	 */
-	public function extenderVotacionAction( Mocion $mocion ) {
+	public function extenderVotacion( Mocion $mocion ) {
 		try {
-			$votacion = $this->get( 'votacion.manager' )->extender( $mocion );
+			$votacion = $this->votacionManager->extender( $mocion );
 		} catch ( \Exception $ex ) {
 			$this->addFlash(
 				'error',
@@ -420,9 +435,9 @@ class MocionController extends AbstractController {
 	 *
 	 * @return \Symfony\Component\HttpFoundation\RedirectResponse
 	 */
-	public function resultadosVotacionAction( Mocion $mocion ) {
+	public function resultadosVotacion( Mocion $mocion ) {
 		try {
-			$votacion = $this->get( 'votacion.manager' )->calcularResultados( $mocion );
+			$votacion = $this->votacionManager->calcularResultados( $mocion );
 		} catch ( \Exception $ex ) {
 			$this->addFlash(
 				'error',
@@ -439,9 +454,9 @@ class MocionController extends AbstractController {
 	 * @return \Symfony\Component\HttpFoundation\RedirectResponse
 	 * @throws \Doctrine\ORM\OptimisticLockException
 	 */
-	public function finalizarVotacionAction( Mocion $mocion ) {
+	public function finalizarVotacion( Mocion $mocion ) {
 		try {
-			$this->get( 'votacion.manager' )->finalizar( $mocion );
+			$this->votacionManager->finalizar( $mocion );
 
 			$this->addFlash(
 				'success',
@@ -457,12 +472,11 @@ class MocionController extends AbstractController {
 		return $this->redirectToRoute( 'mocion_show', array( 'id' => $mocion->getId() ) );
 	}
 
+
 	/**
-	 * @param Request $request
-	 *
-	 * @return JsonResponse
+	 * @Route("/sesion/votar", name="app_votar", methods={"POST"})
 	 */
-	public function votoConcejalAction( Request $request ) {
+	public function votoConcejal( Request $request ) {
 
 		if ( ! $this->get( 'security.authorization_checker' )->isGranted( 'ROLE_CONCEJAL' ) ) {
 			return JsonResponse::create( array(
@@ -474,7 +488,7 @@ class MocionController extends AbstractController {
 		try {
 			$usuario = $this->getUser();
 
-			$mocion = $this->get( 'doctrine.orm.default_entity_manager' )->getRepository( Mocion::class )->getEnVotacion();
+			$mocion = $this->getDoctrine()->getRepository( Mocion::class )->getEnVotacion();
 			if ( ! $mocion ) {
 				throw new Exception( 'No hay una moción en votación en este momento' );
 			}
@@ -490,7 +504,7 @@ class MocionController extends AbstractController {
 				throw new Exception( 'El valor del voto no es válido (' . $valorVoto . ')' );
 			}
 
-			$voto = $this->get( 'votacion.manager' )->votar( $mocion, $usuario, $valorVoto );
+			$voto = $this->votacionManager->votar( $mocion, $usuario, $valorVoto );
 
 			return JsonResponse::create( array(
 				'status' => 'success',

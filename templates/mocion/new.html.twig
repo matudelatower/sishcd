@@ -1,5 +1,5 @@
 {#{% extends 'base.html.twig' %}#}
-{% extends ':sesion:autoridades.html.twig' %}
+{% extends 'sesion/autoridades.html.twig' %}
 
 {#{% block title %}#}
 {#Mocion#}
@@ -14,7 +14,7 @@
             {{ form_start(form) }}
             <div class="row">
                 <div class="col-md-12">
-                    <input class="btn btn-danger btn-lg pull-right" type="submit" name="guardar-y-lanzar"
+                    <input class="btn btn-danger btn-lg float-right" type="submit" name="guardar-y-lanzar"
                            value="Guardar y lanzar moción"/>
                 </div>
             </div>
@@ -30,7 +30,7 @@
                 <div class="col-md-12">{{ form_row(form.expediente) }}</div>
             </div>
             <input class="btn btn-primary" name="guardar" type="submit" value="Guardar"/>
-            <input class="btn btn-danger btn-lg pull-right" type="submit" name="guardar-y-lanzar"
+            <input class="btn btn-danger btn-lg float-right" type="submit" name="guardar-y-lanzar"
                    value="Guardar y lanzar moción"/>
             {{ form_end(form) }}
         </div>

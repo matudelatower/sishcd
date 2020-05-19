@@ -27,7 +27,10 @@ class DefaultController extends AbstractController {
 		return $this->render( ':default:concejal.html.twig' );
 	}
 
-	public function displayAction() {
+	/**
+	 * @Route("/pantalla", name="app_display")
+	 */
+	public function display() {
 		return $this->render( 'default/display.html.twig' );
 	}
 

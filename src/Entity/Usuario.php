@@ -52,7 +52,7 @@ class Usuario implements UserInterface {
 	 */
 	private $enabled;
 
-	public function __toString() {
+	public function __toString(): string {
 		return $this->username;
 	}
 

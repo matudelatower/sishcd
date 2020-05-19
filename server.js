@@ -2,6 +2,8 @@ const app = require('express')()
 const http = require('http').Server(app)
 const io = require('socket.io')(http)
 const port = process.env.PORT || 3000
+const hayQuorumCon = process.env.HAY_QUORUM || 7;
+const totalConcejales = process.env.TOTAL_CONCEJALES || 14;
 
 http.listen(port)
 
@@ -20,8 +22,8 @@ function quorum() {
             type: 'quorum',
             data: {
                 quorum: q,
-                hayQuorum: q > 7,
-                ausentes: 14 - q,
+                hayQuorum: q > hayQuorumCon,
+                ausentes: totalConcejales - q,
                 presentes: presentes
             }
         })

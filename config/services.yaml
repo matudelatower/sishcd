@@ -46,3 +46,10 @@ services:
             - "@doctrine.orm.entity_manager"
         tags:
             - { name: form.type, alias: bootstrapcollection }
+
+    App\Service\NotificationsManager:
+        public: false
+        arguments:
+            - "%env(REDIS_HOST)%"
+            - "%env(REDIS_PORT)%"
+            - "%env(REDIS_SCHEME)%"

@@ -5,6 +5,7 @@ namespace App\Repository;
 use Doctrine\ORM\EntityRepository;
 use App\Entity\Dictamen;
 use App\Entity\Expediente;
+use function Doctrine\ORM\QueryBuilder;
 
 /**
  * ExpedienteRepository
@@ -255,6 +256,7 @@ class ExpedienteRepository extends EntityRepository {
 
 	public function buscarExpedientesSesion( $data ) {
 		$qb = $this->getQbExpedientes( $data );
+		$qb->andWhere( $qb->expr()->isNotNull('e.expediente') );
 
 		return $qb->getQuery()->getResult();
 	}

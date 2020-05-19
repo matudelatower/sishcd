@@ -31,6 +31,9 @@ security:
                 path:   /sesion/logout
                 target: /sesion
             anonymous:    true
+            guard:
+                authenticators:
+                    - App\Security\LoginSesionFormAuthenticator
 #            logout_on_user_change: true
 
         main:

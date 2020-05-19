@@ -29,15 +29,16 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Sesion controller.
  *
  */
 class SesionController extends AbstractController {
+
 	/**
-	 * Lists all sesion entities.
-	 *
+	 * @Route("/sesion", name="sesion")
 	 */
 	public function index() {
 
@@ -80,6 +81,7 @@ class SesionController extends AbstractController {
 
 		return $this->redirectToRoute( 'sesion_logout' );
 	}
+
 
 	public function login( Request $request ) {
 
