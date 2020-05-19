@@ -39,6 +39,8 @@ yarn-error.log
 !public/uploads/ordenes_de_pago/.gitkeep
 /public/uploads/textos_definitivos/anexos/*
 !public/uploads/textos_definitivos/anexos/.gitkeep
+/public/uploads/sis_images/*
+!public/uploads/sis_images/.gitkeep
 
 # -- Editores -----------------------------------------
 # vim
