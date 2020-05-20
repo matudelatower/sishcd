@@ -29,7 +29,7 @@
           data-toggle="dropdown"
           :disabled="cantidadPedidos < 1"
         >
-          <i class="fa fa-fw" :class="loading ? 'fa-spin fa-circle-o-notch' : 'fa-hand-paper-o'"></i>
+          <i class="fas fa-fw" :class="loading ? 'fa-spin fa-circle-o-notch' : 'fa-hand-paper'"></i>
           {{ cantidadPedidos }} pedido{{ cantidadPedidos !== 1 ? 's' : '' }}
         </button>
         <ul class="dropdown-menu">
@@ -81,7 +81,7 @@ export default {
 
       this.loading = true;
       axios
-        .post(`${window.baseUrl}sesion/cancelar-pedir-palabra/${pedido.id}`)
+        .post(`${baseUrl}sesion/cancelar-pedir-palabra/${pedido.id}`)
         .then(response => {
           this.loading = false;
         });

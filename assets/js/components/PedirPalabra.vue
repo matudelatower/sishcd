@@ -20,13 +20,13 @@
         :disabled="loading"
         @click="cancelar"
       >
-        <i class="fa fa-fw fa-ban"></i> Cancelar pedido
+        <i class="fas fa-fw fa-ban"></i> Cancelar pedido
       </button>
       <button v-else-if="loading" class="btn btn-primary btn-block" :disabled="loading">
-        <i class="fa fa-fw fa-spin fa-circle-o-notch"></i> Aguarde...
+        <i class="fas fa-fw fa-spin fa-circle-o-notch"></i> Aguarde...
       </button>
       <button v-else class="btn btn-primary btn-block" :disabled="loading" @click="pedir">
-        <i class="fa fa-fw fa-hand-paper-o"></i> Pedir palabra
+        <i class="fas fa-fw fa-hand-paper"></i> Pedir palabra
       </button>
     </div>
   </div>
@@ -54,7 +54,7 @@ export default {
         return;
       }
       this.loading = true;
-      axios.post(`${window.baseUrl}sesion/pedir-palabra`).then(response => {
+      axios.post(`${baseUrl}sesion/pedir-palabra`).then(response => {
         this.loading = false;
       });
     },
@@ -64,7 +64,7 @@ export default {
       }
       this.loading = true;
       axios
-        .post(`${window.baseUrl}sesion/cancelar-pedir-palabra`)
+        .post(`${baseUrl}sesion/cancelar-pedir-palabra`)
         .then(response => {
           this.loading = false;
         });

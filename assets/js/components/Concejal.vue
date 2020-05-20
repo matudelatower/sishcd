@@ -12,7 +12,7 @@
             <div data-spy="scroll" data-target=".navbar" data-offset="50">
 
                 <nav class="main-header navbar navbar-expand-md navbar-dark navbar-primary">
-                    <div class="container">
+                    <div class="container-fluid">
                         <div class="collapse navbar-collapse order-3" id="navbarCollapse">
                             <!-- Left navbar links -->
                             <ul class="navbar-nav">

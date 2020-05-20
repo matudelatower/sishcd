@@ -27,7 +27,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
     <!-- Navbar -->
     <nav class="main-header navbar navbar-expand-md navbar-dark navbar-primary">
-        <div class="container">
+        <div class="container-fluid">
 
             <button class="navbar-toggler order-1" type="button" data-toggle="collapse" data-target="#navbarCollapse"
                     aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
@@ -205,7 +205,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <!-- /.content -->
     </div>
     <!-- /.content-wrapper -->
-
+    {% if is_granted('ROLE_SECRETARIO') %}
+        <lista-pedir-palabra></lista-pedir-palabra>
+    {% endif %}
 </div>
 <!-- ./wrapper -->
 

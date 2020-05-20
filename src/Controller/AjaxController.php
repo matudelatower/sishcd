@@ -18,6 +18,7 @@ use App\Form\DecretoAjaxType;
 use App\Form\DecretoType;
 use App\Form\DependenciaAjaxType;
 use App\Form\PersonaType;
+use App\Service\NotificationsManager;
 use Endroid\QrCode\QrCode;
 use Ivory\CKEditorBundle\Form\Type\CKEditorType;
 use App\Entity\AnexoExpediente;
@@ -34,6 +35,14 @@ use Symfony\Component\Routing\Annotation\Route;
 
 
 class AjaxController extends AbstractController {
+
+	protected $notificacionesManager;
+
+	public function __construct( NotificationsManager $notificacionesManager ) {
+
+		$this->notificacionesManager = $notificacionesManager;
+	}
+
 	public function getAjaxDefault( Request $request ) {
 		$value = strtoupper( $request->get( 'term' ) );
 		//$value = $request->get('term');
@@ -1145,5 +1154,52 @@ class AjaxController extends AbstractController {
 			) );
 
 		return new JsonResponse( [ 'form' => $formHtml ], $responseStatus );
+	}
+
+
+	/**
+	 * @Route(path="sesion/pedir-palabra", name="app_pedir_palabra")
+	 *
+	 * @return JsonResponse
+	 */
+	public function pedirPalabraAction()
+	{
+		$id = $this->getUser()->getId();
+		$nombre = $this->getUser()->getPersona()->getNombreCompleto();
+
+		$this->notificacionesManager->notify(
+			'palabra.pedir',
+			array(
+				'concejal' => [
+					'id' => $id,
+					'nombre' => $nombre
+				]
+			)
+		);
+
+		return new JsonResponse([ 'pedida' => true ]);
+	}
+
+	/**
+	 * @Route(path="sesion/cancelar-pedir-palabra/{id}", name="app_cancelar_pedir_palabra")
+	 *
+	 * @return JsonResponse
+	 */
+	public function cancelarPedirPalabraAction($id = null)
+	{
+		$id = $id ? $id : $this->getUser()->getId();
+
+		// return new JsonResponse(['pedida' => $id]);
+
+		$this->notificacionesManager->notify(
+			'palabra.cancelar',
+			array(
+				'concejal' => [
+					'id' => intval($id)
+				]
+			)
+		);
+
+		return new JsonResponse([ 'pedida' => false ]);
 	}
 }

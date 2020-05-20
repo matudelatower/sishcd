@@ -79,6 +79,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                         path-carta-organica="{{ asset('uploads/documentos/') ~ cartaOrganica.documento }}"
                                         concejal="{{ concejal }}">
                         </panel-concejal>
+                        {% if app.user.id == id_usuario_presidente %}
+                            <lista-pedir-palabra leave-space="true"></lista-pedir-palabra>
+                        {% else %}
+                            <pedir-palabra></pedir-palabra>
+                        {% endif %}
                     </div>
                 {% endif %}
             </div><!-- /.container-fluid -->

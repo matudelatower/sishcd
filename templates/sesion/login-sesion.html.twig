@@ -33,10 +33,10 @@
             {% if error %}
                 <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
             {% endif %}
-            <form method="post">
+            <form method="post" autocomplete="off">
                 <div class="input-group mb-3">
                     <input type="text" class="form-control" value="{{ last_username }}" name="username"
-                           placeholder="Usuario" required autofocus>
+                           placeholder="Usuario" required autofocus autocomplete="off">
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-user"></span>
