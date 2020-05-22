@@ -13,7 +13,7 @@ require('select2/dist/js/i18n/es.js')
 // require('jquery-ui-dist/jquery-ui.min.js')
 // require('daterangepicker')
 require('moment')
-require('overlayScrollbars')
+require('overlayscrollbars')
 // require('fastclick')
 require('admin-lte')
 
