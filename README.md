@@ -12,6 +12,12 @@ Prerequisitos
 - composer
 - node 10
 - redis
+- pm2
+
+Parámetros:
+=
+
+Se debe configurar el archivo `.env.local` con los parámetros correspondientes a cada organismo
 
 Para la sesión:
 =
