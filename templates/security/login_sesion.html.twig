@@ -26,6 +26,25 @@
             {% if error %}
                 <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
             {% endif %}
+            {% for label, messages in app.flashes(['success','warning', 'error', 'info']) %}
+                {% for message in messages %}
+                    {% if label == 'error' %}
+                        {% set icon = 'fa-ban' %}
+                        {% set label = 'danger' %}
+                    {% elseif label == 'warning' %}
+                        {% set icon = 'fa-exclamation-triangle' %}
+                    {% elseif label == 'info' %}
+                        {% set icon = 'fa-info' %}
+                    {% else %}
+                        {% set icon = 'fa-check' %}
+                    {% endif %}
+                    <div class="alert alert-{{ label }} alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        <h5><i class="icon fas {{ icon }}"></i> Atención!</h5>
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
             <form method="post">
                 <div class="input-group mb-3">
                     <input type="text" class="form-control" value="{{ last_username }}" name="username"

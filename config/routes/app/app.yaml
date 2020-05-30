@@ -38,6 +38,10 @@ documento_carta_organica:
   path:     /documento_carta_organica
   defaults: { _controller: App\Controller\DefaultController::cartaOrganica }
 
+get_concejales_admin:
+  path: /concejales
+  defaults: { _controller: App\Controller\AjaxController::getConcejales }
+
 sesiones:
   resource: "routing/sesiones.yml"
   prefix: /interno-sesiones

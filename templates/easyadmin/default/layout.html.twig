@@ -41,6 +41,15 @@
         <link rel="stylesheet" href="{{ asset('bundles/easyadmin/app.rtl.css') }}">
         <link rel="stylesheet" href="{{ asset('bundles/easyadmin/app-custom-rtl.css') }}">
     {% endif %}
+    {{ encore_entry_link_tags('main') }}
+    <style>
+        .navbar-custom-menu .admin-hcd {
+            align-items: center;
+            /*color: var(--text-color-light);*/
+            cursor: pointer;
+            display: flex;
+        }
+    </style>
 </head>
 
 {% block body %}
@@ -53,7 +62,7 @@
     </script>
 
     {% block wrapper_wrapper %}
-        <div class="wrapper">
+        <div class="wrapper" >
             {% block wrapper %}
                 <header class="main-header">
                     {% block header %}
@@ -111,15 +120,20 @@
                             {% endblock user_menu %}
                         {% endset %}
 
-                        <div class="content-top navbar-custom-menu">
+                        <div class="content-top navbar-custom-menu" id="app">
                             {% if is_granted('ROLE_ADMIN') %}
+                                <div class="admin-hcd">
+                                    <lista-pedir-palabra firewall="admin"></lista-pedir-palabra>
 
-                                <a href="#" id="mostrar-modal-impersonar"><i
-                                            class="fa fa-fw fa-user-secret"></i>
-                                    Impersonar</a>
+                                    <quorum-button firewall="admin"></quorum-button>
 
+                                    <a href="#" id="mostrar-modal-impersonar"><i
+                                                class="fa fa-fw fa-user-secret"></i>
+                                        Impersonar</a>
+                                </div>
                             {% endif %}
                         </div>
+
                         <div class="content-top navbar-custom-menu">
                             {% block header_custom_menu %}
                                 <div class="user user-menu-wrapper {{ _user_is_impersonated ? 'user-is-impersonated' }}"
@@ -136,6 +150,7 @@
                                     {% if easyadmin_config('user.display_name') %}
                                         <span class="user-name">{{ _user_name }}</span>
                                     {% endif %}
+
                                 </div>
                             {% endblock header_custom_menu %}
                         </div>
@@ -293,9 +308,17 @@
                 for (let i in datos) {
                     let user = datos[i]
 
+                    let roles = [];
+
+                    if (Array.isArray(user.roles)) {
+                        roles = user.roles
+                    } else {
+                        roles = Object.values(user.roles)
+                    }
+
                     if (!r.test(user.username)
                         && !r.test(user.nombre)
-                        && !r.test(user.roles.join('|'))
+                        && !r.test(roles.join('|'))
                     ) {
                         continue
                     }
@@ -303,7 +326,7 @@
                     let row = [
                         '<a href="{{ path('app_homepage') }}?_want_to_be_this_user=' + user.username + '">' + user.username + '</a>',
                         user.nombre,
-                        user.roles.join(','),
+                        roles.join(','),
                     ].join('</td><td>')
 
                     table.append('<tr><td>' + row + '</td></tr>')
@@ -320,6 +343,7 @@
             })
         })
     </script>
+    {{ encore_entry_script_tags('main') }}
     </body>
 {% endblock body %}
 </html>

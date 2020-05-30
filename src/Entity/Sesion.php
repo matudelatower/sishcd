@@ -97,6 +97,10 @@ class Sesion extends BaseClass {
 		return $this->getTitulo();
 	}
 
+	public function getTituloLargo() {
+		return $this->getTitulo() .' - '. $this->getFecha()->format('d/m/Y');
+	}
+
 	/**
 	 * Get id
 	 *

@@ -2,16 +2,25 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\TipoDecreto;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
-class TipoDecreto extends Fixture
-{
-    public function load(ObjectManager $manager)
-    {
-        // $product = new Product();
-        // $manager->persist($product);
+class TipoDecretoFixture extends Fixture {
+	public function load( ObjectManager $manager ) {
+		$tiposDecretos = [
+			'Contratación',
+			'Pago de Servicios',
+			'Beca',
+			'Licitación',
+		];
 
-        $manager->flush();
-    }
+		foreach ( $tiposDecretos as $itemTiposDecreto ) {
+			$tipoDecreto = new TipoDecreto();
+			$tipoDecreto->setNombre( $itemTiposDecreto );
+			$manager->persist($tipoDecreto);
+		}
+
+		$manager->flush();
+	}
 }

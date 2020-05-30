@@ -48,13 +48,16 @@ class SesionController extends AbstractController {
 		try {
 			$sesion = $this->getDoctrine()->getRepository( Sesion::class )->findQbUltimaSesion()->getQuery()->getSingleResult();
 		} catch ( NoResultException $e ) {
+
+//			TODO ver flash message cuando no hay sesión activa creada
 			$this->addFlash( 'warning', 'No existe sesión activa' );
 
 			return $this->redirectToRoute( 'sesion_logout' );
+
 		} catch ( NonUniqueResultException $e ) {
 		}
 
-		if ( $this->get( 'security.authorization_checker' )->isGranted( 'ROLE_CONCEJAL' ) ) {
+		if ( $this->isGranted( 'ROLE_CONCEJAL' ) ) {
 
 
 			return $this->render( 'sesion/index.html.twig',
@@ -65,10 +68,10 @@ class SesionController extends AbstractController {
 				) );
 		}
 
-		if ( $this->get( 'security.authorization_checker' )->isGranted( 'ROLE_SECRETARIO' ) ||
-		     $this->get( 'security.authorization_checker' )->isGranted( 'ROLE_LEGISLATIVO' ) ||
-		     $this->get( 'security.authorization_checker' )->isGranted( 'ROLE_DEFENSOR' ) ||
-		     $this->get( 'security.authorization_checker' )->isGranted( 'ROLE_PROSECRETARIO' )
+		if ( $this->isGranted( 'ROLE_SECRETARIO' ) ||
+		     $this->isGranted( 'ROLE_LEGISLATIVO' ) ||
+		     $this->isGranted( 'ROLE_DEFENSOR' ) ||
+		     $this->isGranted( 'ROLE_PROSECRETARIO' )
 		) {
 
 			return $this->render( 'sesion/autoridades.html.twig',
@@ -117,8 +120,7 @@ class SesionController extends AbstractController {
 		}
 
 
-
-		$sesiones  = $paginator->paginate(
+		$sesiones = $paginator->paginate(
 			$sesiones,
 			$request->query->get( 'page', 1 )/* page number */,
 			10/* limit per page */
@@ -562,7 +564,7 @@ class SesionController extends AbstractController {
 		}
 	}
 
-	public function imprimirBAE(Pdf $knpSnappyPdf, Request $request, $sesionId ) {
+	public function imprimirBAE( Pdf $knpSnappyPdf, Request $request, $sesionId ) {
 		$em     = $this->getDoctrine()->getManager();
 		$sesion = $em->getRepository( Sesion::class )->find( $sesionId );
 
@@ -646,7 +648,7 @@ class SesionController extends AbstractController {
 
 	}
 
-	public function imprimirOD(Pdf $knpSnappyPdf, Request $request, $sesionId ) {
+	public function imprimirOD( Pdf $knpSnappyPdf, Request $request, $sesionId ) {
 		$em     = $this->getDoctrine()->getManager();
 		$sesion = $em->getRepository( Sesion::class )->find( $sesionId );
 
@@ -796,7 +798,7 @@ class SesionController extends AbstractController {
 			) );
 	}
 
-	public function imprimirActa(Pdf $knpSnappyPdf, Request $request, $sesionId ) {
+	public function imprimirActa( Pdf $knpSnappyPdf, Request $request, $sesionId ) {
 		$em     = $this->getDoctrine()->getManager();
 		$sesion = $em->getRepository( Sesion::class )->find( $sesionId );
 
@@ -933,7 +935,7 @@ class SesionController extends AbstractController {
 		);
 	}
 
-	public function imprimirHomenajes( Pdf $knpSnappyPdf,Request $request, $sesionId ) {
+	public function imprimirHomenajes( Pdf $knpSnappyPdf, Request $request, $sesionId ) {
 		$em                 = $this->getDoctrine()->getManager();
 		$sesion             = $em->getRepository( Sesion::class )->find( $sesionId );
 		$periodoLegislativo = $em->getRepository( PeriodoLegislativo::class )->findOneByAnio( $sesion->getFecha()->format( 'Y' ) );
@@ -980,7 +982,7 @@ class SesionController extends AbstractController {
 			[ 'sesion' => $id ] );
 	}
 
-	public function imprimirMociones(Pdf $knpSnappyPdf, Request $request, Sesion $id ) {
+	public function imprimirMociones( Pdf $knpSnappyPdf, Request $request, Sesion $id ) {
 		$title              = 'Votación Nominal';
 		$sesion             = $id;
 		$em                 = $this->getDoctrine()->getManager();

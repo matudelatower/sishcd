@@ -10,4 +10,31 @@ namespace App\Repository;
  */
 class TextoDefinitivoRepository extends \Doctrine\ORM\EntityRepository
 {
+	public function getQbAll( $filter = null ) {
+		$qb = $this->createQueryBuilder( 'td' );
+		if ( $filter ) {
+			if ( isset( $filter['numero'] ) ) {
+				$numero = $filter['numero'];
+				$qb
+					->where( "td.numero = :numero" );
+				$qb->setParameter( 'numero', $numero );
+			}
+
+			if ( isset( $filter['rama'] ) ) {
+				$q = $filter['rama'];
+				$qb
+					->where( "td.rama = :rama" );
+				$qb->setParameter( 'rama', $q );
+			}
+
+			if ( isset( $filter['aprobadoEnSesion'] ) ) {
+				$q = $filter['aprobadoEnSesion'];
+				$qb
+					->andWhere( 'td.aprobadoEnSesion = :aprobadoEnSesion' )
+					->setParameter( 'aprobadoEnSesion', $q );
+			}
+		}
+
+		return $qb;
+	}
 }

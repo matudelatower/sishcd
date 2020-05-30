@@ -353,7 +353,7 @@ class Builder {
 					)
 				);
 			if ( ! $this->authorizationChecker->isGranted( 'ROLE_SECRETARIO' ) &&
-			! $this->authorizationChecker->isGranted( 'ROLE_MESA_ENTRADA' )) {
+			     ! $this->authorizationChecker->isGranted( 'ROLE_MESA_ENTRADA' ) ) {
 				$menu[ $keyPersonal ]
 					->addChild(
 						'Incorporar Expedientes en Sesión',
@@ -413,6 +413,32 @@ class Builder {
 					'Ordenes de pago',
 					array(
 						'route'          => 'orden_de_pago_index',
+						'attributes'     => [ 'class' => 'nav-item' ],
+						'linkAttributes' => [ 'class' => 'nav-link' ]
+					)
+				);
+		}
+
+		if ( $this->authorizationChecker->isGranted( 'ROLE_LEGISLATIVO' ) ) {
+
+			$textosDefinitivos = 'TEXTOS DEFINITIVOS';
+			$menu->addChild(
+				$textosDefinitivos,
+				array(
+					'childrenAttributes' => array(
+						'class' => 'nav nav-treeview',
+					),
+				)
+			)
+			     ->setUri( '#' )
+			     ->setLinkAttribute( 'class', 'nav-link' )
+			     ->setExtra( 'icon', 'fa fa-folder-open' )
+			     ->setAttribute( 'class', 'nav-item has-treeview' );
+			$menu[ $textosDefinitivos ]
+				->addChild(
+					'Textos definitivos',
+					array(
+						'route'          => 'texto_definitivo_index',
 						'attributes'     => [ 'class' => 'nav-item' ],
 						'linkAttributes' => [ 'class' => 'nav-link' ]
 					)

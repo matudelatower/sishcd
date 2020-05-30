@@ -14,17 +14,7 @@ class AdminController extends EasyAdminController {
 		$this->passwordEncoder = $passwordEncoder;
 	}
 
-//	public function createNewUsuarioEntity() {
-//		return $this->get( 'fos_user.user_manager' )->createUser();
-//	}
-//
-//	public function updateUsuarioEntity( $user ) {
-//		$this->get( 'fos_user.user_manager' )->updateUser( $user, false );
-//		parent::updateEntity( $user );
-//	}
-//
 	public function persistUsuarioEntity( $user ) {
-//		$this->get( 'fos_user.user_manager' )->updateUser( $user, false );
 		$user->setPassword( $this->passwordEncoder->encodePassword(
 			$user,
 			$this->request->get( 'usuario' )['plainPassword']
@@ -32,10 +22,9 @@ class AdminController extends EasyAdminController {
 		parent::persistEntity( $user );
 	}
 
-//
+
 	public function updateUsuarioEntity( $user ) {
-//		$this->get( 'fos_user.user_manager' )->updateUser( $user, false );
-		if ( $this->request->get( 'usuario' )['plainPassword'] ) {
+		if ( $this->request->get( 'usuario' ) && $this->request->get( 'usuario' )['plainPassword'] ) {
 			$user->setPassword( $this->passwordEncoder->encodePassword(
 				$user,
 				$this->request->get( 'usuario' )['plainPassword']

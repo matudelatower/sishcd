@@ -355,7 +355,7 @@ class AjaxController extends AbstractController {
 
 		$mail = $this->getUser()->getEmail();
 
-		$asunto = 'HCD '.$_ENV['CIUDAD_NAME'].' - Código Impresión Proyecto';
+		$asunto = 'HCD ' . $_ENV['CIUDAD_NAME'] . ' - Código Impresión Proyecto';
 
 		$code = new QrCode( $expediente->getCodigoReferencia() );
 		$code->setLogoPath( $this->get( 'kernel' )->getRootDir() . '/../public/uploads/sis_images/apple-touch-icon.png' )
@@ -851,10 +851,11 @@ class AjaxController extends AbstractController {
 
 		$concejales = array_map( function ( Usuario $usuario ) {
 			$persona = $usuario->getPersona();
+
 			// TODO checkear utf encode
 			return [
 				'id'     => $usuario->getId(),
-				'nombre' => utf8_encode(ucwords( strtolower( $persona->getNombreCompleto() ) )),
+				'nombre' => utf8_encode( ucwords( strtolower( $persona->getNombreCompleto() ) ) ),
 			];
 		},
 			$concejales );
@@ -1062,8 +1063,8 @@ class AjaxController extends AbstractController {
 		$iniciadores = $exp->getIniciadores()->map( function ( IniciadorExpediente $ie ) use ( &$autor ) {
 			if ( $ie->getAutor() ) {
 				$autor = [
-					'nombre' => ($ie->getIniciador()) ? $ie->getIniciador()->getCargoPersona()->getPersona()->getNombreCompleto() : $ie->getIniciador(),
-					'cargo'  => ($ie->getIniciador()) ? $ie->getIniciador()->getCargoPersona()->getCargo()->getNombre(): $ie->getIniciador(),
+					'nombre' => ( $ie->getIniciador() ) ? $ie->getIniciador()->getCargoPersona()->getPersona()->getNombreCompleto() : $ie->getIniciador(),
+					'cargo'  => ( $ie->getIniciador() ) ? $ie->getIniciador()->getCargoPersona()->getCargo()->getNombre() : $ie->getIniciador(),
 				];
 			}
 			if ( $ie->getIniciador() ) {
@@ -1133,7 +1134,6 @@ class AjaxController extends AbstractController {
 		$form    = $this->createForm( DecretoAjaxType::class, $decreto );
 
 
-
 		$form->handleRequest( $request );
 
 		if ( $form->isSubmitted() && $form->isValid() ) {
@@ -1162,22 +1162,21 @@ class AjaxController extends AbstractController {
 	 *
 	 * @return JsonResponse
 	 */
-	public function pedirPalabraAction()
-	{
-		$id = $this->getUser()->getId();
+	public function pedirPalabraAction() {
+		$id     = $this->getUser()->getId();
 		$nombre = $this->getUser()->getPersona()->getNombreCompleto();
 
 		$this->notificacionesManager->notify(
 			'palabra.pedir',
 			array(
 				'concejal' => [
-					'id' => $id,
+					'id'     => $id,
 					'nombre' => $nombre
 				]
 			)
 		);
 
-		return new JsonResponse([ 'pedida' => true ]);
+		return new JsonResponse( [ 'pedida' => true ] );
 	}
 
 	/**
@@ -1185,8 +1184,7 @@ class AjaxController extends AbstractController {
 	 *
 	 * @return JsonResponse
 	 */
-	public function cancelarPedirPalabraAction($id = null)
-	{
+	public function cancelarPedirPalabraAction( $id = null ) {
 		$id = $id ? $id : $this->getUser()->getId();
 
 		// return new JsonResponse(['pedida' => $id]);
@@ -1195,11 +1193,11 @@ class AjaxController extends AbstractController {
 			'palabra.cancelar',
 			array(
 				'concejal' => [
-					'id' => intval($id)
+					'id' => intval( $id )
 				]
 			)
 		);
 
-		return new JsonResponse([ 'pedida' => false ]);
+		return new JsonResponse( [ 'pedida' => false ] );
 	}
 }

@@ -68,6 +68,26 @@ class DictamenOD extends BaseClass
 	 */
 	private $tieneTratamientoPreferencial;
 
+	/**
+	 * @var $incorporadoEnSesion
+	 *
+	 * @ORM\Column(name="incorporado_en_sesion", type="boolean", nullable=true)
+	 */
+	private $incorporadoEnSesion;
+
+	/**
+	 * @var $aprobadoSobreTabla
+	 *
+	 * @ORM\Column(name="aprobado_sobre_tabla", type="boolean", nullable=true)
+	 */
+	private $aprobadoSobreTabla;
+
+	/**
+	 * @var $vueltaAComision
+	 *
+	 * @ORM\Column(name="vuelta_acomision", type="boolean", nullable=true)
+	 */
+	private $vueltaAComision;
 
     /**
      * Get id
@@ -222,4 +242,62 @@ class DictamenOD extends BaseClass
     {
         return $this->tieneTratamientoPreferencial;
     }
+
+	/**
+	 * @return \App\Entity\Expediente
+	 */
+	public function getExpediente(): \App\Entity\Expediente {
+		return $this->expediente;
+	}
+
+	/**
+	 * @param \App\Entity\Expediente $expediente
+	 */
+	public function setExpediente( \App\Entity\Expediente $expediente ): void {
+		$this->expediente = $expediente;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getIncorporadoEnSesion() {
+		return $this->incorporadoEnSesion;
+	}
+
+	/**
+	 * @param mixed $incorporadoEnSesion
+	 */
+	public function setIncorporadoEnSesion( $incorporadoEnSesion ): void {
+		$this->incorporadoEnSesion = $incorporadoEnSesion;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getAprobadoSobreTabla() {
+		return $this->aprobadoSobreTabla;
+	}
+
+	/**
+	 * @param mixed $aprobadoSobreTabla
+	 */
+	public function setAprobadoSobreTabla( $aprobadoSobreTabla ): void {
+		$this->aprobadoSobreTabla = $aprobadoSobreTabla;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getVueltaAComision() {
+		return $this->vueltaAComision;
+	}
+
+	/**
+	 * @param mixed $vueltaAComision
+	 */
+	public function setVueltaAComision( $vueltaAComision ): void {
+		$this->vueltaAComision = $vueltaAComision;
+	}
+
+
 }
