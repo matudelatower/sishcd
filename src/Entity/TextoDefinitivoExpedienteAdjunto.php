@@ -100,11 +100,11 @@ class TextoDefinitivoExpedienteAdjunto extends BaseClass {
 	/**
 	 * Set creadoPor
 	 *
-	 * @param App\Entity\Usuario $creadoPor
+	 * @param \App\Entity\Usuario $creadoPor
 	 *
 	 * @return TextoDefinitivoExpedienteAdjunto
 	 */
-	public function setCreadoPor( App\Entity\Usuario $creadoPor = null ) {
+	public function setCreadoPor( \App\Entity\Usuario $creadoPor = null ) {
 		$this->creadoPor = $creadoPor;
 
 		return $this;
@@ -113,11 +113,11 @@ class TextoDefinitivoExpedienteAdjunto extends BaseClass {
 	/**
 	 * Set actualizadoPor
 	 *
-	 * @param App\Entity\Usuario $actualizadoPor
+	 * @param \App\Entity\Usuario $actualizadoPor
 	 *
 	 * @return TextoDefinitivoExpedienteAdjunto
 	 */
-	public function setActualizadoPor( App\Entity\Usuario $actualizadoPor = null ) {
+	public function setActualizadoPor( \App\Entity\Usuario $actualizadoPor = null ) {
 		$this->actualizadoPor = $actualizadoPor;
 
 		return $this;
