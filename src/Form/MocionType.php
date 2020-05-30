@@ -66,6 +66,11 @@ class MocionType extends AbstractType {
 				array(
 					'label' => 'Tipo de mayoría',
 					'class' => TipoMayoria::class,
+					'query_builder' => function ( EntityRepository $er ) {
+						return $er->createQueryBuilder( 'tm' )
+						          ->orderBy('tm.id', 'ASC')
+							;
+					},
 				) )
 			->add( 'expediente',
 				EntityType::class,
