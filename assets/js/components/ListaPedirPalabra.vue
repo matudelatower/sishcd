@@ -6,7 +6,7 @@
   width: 280px;
 }
 .leaveSpace {
-	right: 320px !important;
+	right: 7rem !important;
 }
 .grande #pedir-palabra-boton,
 .grande .dropdown-menu {

@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\BoletinAsuntoEntrado;
 use App\Entity\DictamenOD;
 use App\Entity\Documento;
+use App\Entity\Mocion;
 use App\Entity\OrdenDelDia;
 use App\Entity\Parametro;
 use App\Entity\PeriodoLegislativo;
@@ -1018,9 +1019,38 @@ class SesionController extends AbstractController {
 
 		$form = $this->createForm( PlanificarSesionType::class, $sesion );
 
+		$mocionesOriginales = new ArrayCollection();
+
+		// Create an ArrayCollection of the current Tag objects in the database
+		foreach ( $sesion->getMociones() as $mocion ) {
+			$mocionesOriginales->add( $mocion );
+		}
+
 		$form->handleRequest( $request );
 
 		if ( $form->isSubmitted() && $form->isValid() ) {
+
+			foreach ( $mocionesOriginales as $mocion ) {
+				if ( false === $sesion->getMociones()->contains( $mocion ) ) {
+					$mocion->setSesion( null );
+					$em->remove( $mocion );
+				}
+			}
+
+
+			// asigno mociones para votar para la sesion planificada
+			$nuevasMociones = $sesion->getMociones();
+
+			$mocionPlanificada = $this->getDoctrine()->getRepository( Parametro::class )->findOneBySlug( Mocion::TIPO_PLANIFICADA );
+			$estadoMocion      = $this->getDoctrine()->getRepository( Parametro::class )->findOneBySlug( Mocion::ESTADO_PARA_VOTAR );
+
+			foreach ( $nuevasMociones as $nuevaMocion ) {
+				if ( ! $nuevaMocion->getId() ) {
+					$nuevaMocion->setTipo( $mocionPlanificada );
+					$nuevaMocion->setSesion( $sesion );
+					$nuevaMocion->setEstado( $estadoMocion );
+				}
+			}
 
 			$em->flush();
 			$this->addFlash(
