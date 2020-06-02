@@ -352,16 +352,24 @@ class Builder {
 						'linkAttributes' => [ 'class' => 'nav-link' ]
 					)
 				);
-			if ( ! $this->authorizationChecker->isGranted( 'ROLE_SECRETARIO' ) &&
-			     ! $this->authorizationChecker->isGranted( 'ROLE_MESA_ENTRADA' ) ) {
+			if ( $this->authorizationChecker->isGranted( 'ROLE_LEGISLATIVO' ) ) {
 				$menu[ $keyPersonal ]
 					->addChild(
 						'Incorporar Expedientes en Sesión',
-						array(
+						[
 							'route'          => 'incorporar_expedientes_a_sesion_index',
 							'attributes'     => [ 'class' => 'nav-item' ],
 							'linkAttributes' => [ 'class' => 'nav-link' ]
-						)
+						]
+					);
+				$menu[ $keyPersonal ]
+					->addChild(
+						'Incorporar Dictamen en Sesión',
+						[
+							'route' => 'incorporar_dictamenes_en_sesion_index',
+							'attributes'     => [ 'class' => 'nav-item' ],
+							'linkAttributes' => [ 'class' => 'nav-link' ]
+						]
 					);
 			}
 		}

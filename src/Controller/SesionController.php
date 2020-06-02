@@ -6,6 +6,7 @@ use App\Entity\BoletinAsuntoEntrado;
 use App\Entity\DictamenOD;
 use App\Entity\Documento;
 use App\Entity\OrdenDelDia;
+use App\Entity\Parametro;
 use App\Entity\PeriodoLegislativo;
 use App\Entity\ProyectoBAE;
 use App\Entity\Sesion;
@@ -14,6 +15,7 @@ use App\Form\ExtractoDictamenODType;
 use App\Form\ExtractoProyectoBAEType;
 use App\Form\Filter\SesionFilterType;
 use App\Form\OrdenDelDiaType;
+use App\Form\PlanificarSesionType;
 use App\Form\ProyectoBAEGiroType;
 use App\Form\SesionCargarActaType;
 use App\Form\SesionCargarHomenajeType;
@@ -83,23 +85,6 @@ class SesionController extends AbstractController {
 		}
 
 		return $this->redirectToRoute( 'sesion_logout' );
-	}
-
-
-	public function login( Request $request ) {
-
-		$authUtils = $this->get( 'security.authentication_utils' );
-		// get the login error if there is one
-		$error = $authUtils->getLastAuthenticationError();
-
-		// last username entered by the user
-		$lastUsername = $authUtils->getLastUsername();
-
-		return $this->render( 'sesion/login.html.twig',
-			array(
-				'last_username' => $lastUsername,
-				'error'         => $error,
-			) );
 	}
 
 	public function indexSesiones( PaginatorInterface $paginator, Request $request ) {
@@ -532,9 +517,9 @@ class SesionController extends AbstractController {
 		$mailer = $this->get( 'mailer' );
 
 		$em                      = $this->getDoctrine()->getManager();
-		$parametroMail           = $em->getRepository( 'AppBundle:Parametro' )->findOneBySlug( 'mail-concejales' );
-		$parametroMailDefensor   = $em->getRepository( 'AppBundle:Parametro' )->findOneBySlug( 'mail-defensor' );
-		$parametroMailSecretario = $em->getRepository( 'AppBundle:Parametro' )->findOneBySlug( 'mail-secretaria' );
+		$parametroMail           = $em->getRepository( Parametro::class )->findOneBySlug( 'mail-concejales' );
+		$parametroMailDefensor   = $em->getRepository( Parametro::class )->findOneBySlug( 'mail-defensor' );
+		$parametroMailSecretario = $em->getRepository( Parametro::class )->findOneBySlug( 'mail-secretaria' );
 
 		if ( $parametroMail && $parametroMailDefensor ) {
 			$asunto = 'HCD Posadas - Plan de Labor ' . $sesion->getTitulo();
@@ -1022,6 +1007,34 @@ class SesionController extends AbstractController {
 				'Content-Disposition' => 'inline; filename="' . $title . ' - ' . $sesion->getTitulo() . '.pdf"'
 			]
 		);
+	}
+
+	/**
+	 * @Route("/{sesion}/planificar", name="planificar_sesion")
+	 */
+	public function planificar( Request $request, Sesion $sesion ) {
+
+		$em = $this->getDoctrine()->getManager();
+
+		$form = $this->createForm( PlanificarSesionType::class, $sesion );
+
+		$form->handleRequest( $request );
+
+		if ( $form->isSubmitted() && $form->isValid() ) {
+
+			$em->flush();
+			$this->addFlash(
+				'success',
+				'Sesión guardada correctamente'
+			);
+
+		}
+
+		return $this->render( 'sesiones/planificar.html.twig',
+			[
+				'sesion' => $sesion,
+				'form'   => $form->createView()
+			] );
 	}
 
 }

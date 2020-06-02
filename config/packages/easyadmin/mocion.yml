@@ -14,4 +14,4 @@ easy_admin:
                     - { property: 'cuentaAfirmativos' }
                     - { property: 'cuentaNegativos' }
                     - { property: 'cuentaAbstenciones' }
-                    - { property: 'votos', type: 'collection' , type_options: { by_reference: false, entry_type: App\Form\VotoType } }
+#                    - { property: 'votos', type: 'collection' , type_options: { by_reference: false, entry_type: App\Form\VotoType } }

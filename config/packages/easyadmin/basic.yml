@@ -21,7 +21,7 @@ easy_admin:
             - { label: 'Sesión', entity: Sesion }
             - { label: 'Proyecto BAE', entity: ProyectoBAE }
             - { label: 'Moción', entity: Mocion }
-            - { label: 'Periodo Legislativo', entity: PeriodoLegislativo }
+            - { label: 'Periodo Legislativo', entity: PeriodoLegislativo, icon: 'calendar' }
             - Documento
             - Parametro
             - Expediente

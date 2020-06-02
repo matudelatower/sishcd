@@ -2,9 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\DictamenOD;
+use App\Entity\Sesion;
+use App\Entity\TipoExpediente;
 use App\Form\AltaDictamenType;
 use App\Form\AsignarDictamenAExpteType;
 use App\Form\CrearDictamenType;
+use App\Form\DictamenODIncorporarType;
 use App\Form\Filter\DictamenFilterType;
 use Doctrine\Common\Collections\ArrayCollection;
 use App\Entity\Dictamen;
@@ -109,7 +113,7 @@ class DictamenController extends AbstractController
             $em = $this->getDoctrine()->getManager();
 
             $dictamen->getExpediente()->setBorrador(false);
-            $tipoExpediente = $em->getRepository('MesaEntradaBundle:TipoExpediente')->findOneBySlug('externo');
+            $tipoExpediente = $em->getRepository(TipoExpediente::class)->findOneBySlug('externo');
             $dictamen->getExpediente()->setTipoExpediente($tipoExpediente);
 
             $em->persist($dictamen);
@@ -302,4 +306,73 @@ class DictamenController extends AbstractController
                 'form' => $form->createView()
             ]);
     }
+
+	public function incorporarDictamenesEnSesion( Request $request ) {
+		$em         = $this->getDoctrine()->getManager();
+		$dictamenOD = new DictamenOD();
+		$dictamen   = new Dictamen();
+		$dictamenOD->setDictamen( $dictamen );
+
+		$sesionQb = $em->getRepository( Sesion::class )->findQbUltimaSesion();
+
+		$sesion = null;
+
+
+		if ( ! $sesionQb->getQuery()->getResult() ) {
+			$this->get( 'session' )->getFlashBag()->add(
+				'warning',
+				'No hay una Sesión Activa Creada'
+			);
+		} else {
+			$sesion = $sesionQb->getQuery()->getSingleResult();
+		}
+
+		if ( $sesion ) {
+
+			if ( $sesion->getBae()->last() ) {
+				$dictamenOD->setOrdenDelDia( $sesion->getOd()->last() );
+			} else {
+				$this->get( 'session' )->getFlashBag()->add(
+					'warning',
+					'El Plan de labor aun no está conformado'
+				);
+
+				return $this->redirectToRoute( 'app_homepage' );
+			}
+		}
+
+//		$dictamenOD->setExtracto( $dictamen->getExtracto() );
+
+
+		$form = $this->createForm( DictamenODIncorporarType::class, $dictamenOD );
+
+		$form->handleRequest( $request );
+
+
+		if ( $form->isSubmitted() && $form->isValid() ) {
+
+			$dictamenOD->setIncorporadoEnSesion( true );
+
+			$expediente = $form->get( "dictamen" )->get("expediente")->getData();
+
+			$dictamen->setExpediente( $expediente );
+
+			$em->persist( $dictamen );
+			$em->persist( $dictamenOD );
+			$em->flush();
+
+			$this->get( 'session' )->getFlashBag()->add(
+				'success',
+				'Dictamen ingresado correctamente'
+			);
+
+			return $this->redirectToRoute( 'dictamen_index' );
+		}
+
+		return $this->render( 'dictamenod/incorporar_en_sesion.html.twig',
+			[
+				'form'     => $form->createView(),
+				'dictamen' => $dictamen,
+			] );
+	}
 }
