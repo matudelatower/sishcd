@@ -845,7 +845,7 @@ class AjaxController extends AbstractController {
 		                   ->andWhere( 'p.activo = true' )
 		                   ->andWhere( 'u.enabled = true' )
 		                   ->andWhere( 'c.id = :id' )
-		                   ->setParameter( 'id', Cargo::CARGO_CONCEJAL )
+		                   ->setParameter( 'id', $_ENV['CARGO_CONCEJAL'] )
 		                   ->getQuery()
 		                   ->getResult();
 

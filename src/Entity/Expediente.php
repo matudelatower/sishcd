@@ -1132,8 +1132,8 @@ class Expediente extends BaseClass {
 	public function esProyectoDeConcejal() {
 		return $this->getIniciadores()->exists( function ( $i, IniciadorExpediente $ie ) {
 			return $ie->getAutor()
-			       && ( $ie->getIniciador()->getCargoPersona()->getCargo()->getId() == Cargo::CARGO_CONCEJAL ||
-			            $ie->getIniciador()->getCargoPersona()->getCargo()->getId() == Cargo::CARGO_PRESIDENTE );
+			       && ( $ie->getIniciador()->getCargoPersona()->getCargo()->getId() == $_ENV['CARGO_CONCEJAL'] ||
+			            $ie->getIniciador()->getCargoPersona()->getCargo()->getId() == $_ENV['CARGO_PRESIDENTE'] );
 		} );
 	}
 
@@ -1156,7 +1156,7 @@ class Expediente extends BaseClass {
 	public function esProyectoDeDefensor() {
 		return $this->getIniciadores()->exists( function ( $i, IniciadorExpediente $ie ) {
 			return $ie->getAutor()
-			       && $ie->getIniciador()->getCargoPersona()->getCargo()->getId() == Cargo::CARGO_DEFENSOR;
+			       && $ie->getIniciador()->getCargoPersona()->getCargo()->getId() == $_ENV['CARGO_DEFENSOR'];
 		} );
 	}
 
