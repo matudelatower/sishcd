@@ -11,11 +11,10 @@ fos_ck_editor:
     default_config: my_config
     configs:
         my_config:
-            toolbar:
-                - ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo']
-                - ['Bold', 'Italic', 'Underline', 'Strike', '-', 'RemoveFormat']
-                - '/'
-                - ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock']
-                - '/'
-                - ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote']
-                - ['Styles', 'Format']
+            toolbar: full
+            extraPlugins: "justify"
+    plugins:
+        justify:
+            path:     "build/ckeditor/plugins/justify/" # with trailing slash
+            filename: "plugin.js"
+
